@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://bdnu8fnyer222"]
+
+[ext_resource type="Script" uid="uid://7pclqypncw2c" path="res://scenes/node_main_script.gd" id="1_ta4a1"]
+[ext_resource type="Shader" uid="uid://t84ols7oncvw" path="res://shaders/display_1_shader.gdshader" id="2_lbbxc"]
+[ext_resource type="Shader" uid="uid://c8fqqtj2xywd2" path="res://shaders/test_shader_1.gdshader" id="2_ta4a1"]
+[ext_resource type="Shader" uid="uid://mv78gxwyahhe" path="res://shaders/circle_sdf_shader.gdshader" id="4_u0iwh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u0iwh"]
+shader = ExtResource("2_lbbxc")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ta4a1"]
+size = Vector2(512, 512)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lbbxc"]
+shader = ExtResource("2_ta4a1")
+
+[sub_resource type="QuadMesh" id="QuadMesh_lbbxc"]
+size = Vector2(512, 512)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gqu34"]
+shader = ExtResource("4_u0iwh")
+
+[node name="Node2D_main" type="Node2D"]
+script = ExtResource("1_ta4a1")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_u0iwh")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_ta4a1")
+
+[node name="SubViewport_1" type="SubViewport" parent="."]
+disable_3d = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_1"]
+material = SubResource("ShaderMaterial_lbbxc")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_lbbxc")
+
+[node name="SubViewport_2" type="SubViewport" parent="."]
+disable_3d = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_2"]
+material = SubResource("ShaderMaterial_gqu34")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_lbbxc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_right = 0.363
+anchor_bottom = 0.5
+offset_right = 0.14399719
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.054
+anchor_top = 0.039
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.044000626
+offset_top = 0.015999794
+offset_bottom = -1.5258789e-05
+grow_horizontal = 2
+
+[node name="Button_1" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.057000004
+anchor_top = 0.041
+anchor_right = 0.943
+anchor_bottom = 0.24400002
+offset_left = -0.03200054
+offset_top = -0.08599949
+offset_right = 0.03199768
+offset_bottom = -0.024002075
+text = "Test Shader"
+
+[node name="Button_2" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.057000004
+anchor_top = 0.28500003
+anchor_right = 0.943
+anchor_bottom = 0.48800004
+offset_left = -0.03200054
+offset_top = -0.11000061
+offset_right = 0.03199768
+offset_bottom = -0.04800415
+text = "Circle SDF"
+
+[connection signal="pressed" from="CanvasLayer/Control/Panel/Button_1" to="." method="_on_button_test_shader_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/Button_2" to="." method="_on_button_sdf_circle_shader_pressed"]
