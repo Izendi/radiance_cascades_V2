@@ -1,0 +1,1 @@
+My second attempt at a flatland radiance cascades implementation based on the work of Alexander Sannikov
