@@ -12,10 +12,14 @@ config_version=5
 
 config/name="radiance_cascades_v2"
 run/main_scene="uid://bdnu8fnyer222"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=512
 window/size/viewport_height=512
+
+[dotnet]
+
+project/assembly_name="radiance_cascades_v2"

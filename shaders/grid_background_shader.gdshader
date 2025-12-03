@@ -1,15 +1,16 @@
 shader_type canvas_item;
+render_mode unshaded;
 
 const vec3 BLACK = vec3(0.0, 0.0, 0.0);
 const vec3 WHITE = vec3(1.0, 1.0, 1.0);
 const vec3 GREY = vec3(0.6, 0.6, 0.6);
 
-float inverseLerp(float v, float minValue, float maxValue) 
+float inverseLerp(float v, float minValue, float maxValue)
 {
     return (v - minValue) / (maxValue - minValue);
 }
 
-float remap(float v, float inMin, float inMax, float outMin, float outMax) 
+float remap(float v, float inMin, float inMax, float outMin, float outMax)
 {
     float t = inverseLerp(v, inMin, inMax);
     return mix(outMin, outMax, t);
@@ -40,17 +41,17 @@ vec3 drawGrid(vec2 texCoord, vec3 color, vec3 lineColor, float cellSpacing, floa
     return color;
 }
 
-void vertex() 
+void vertex()
 {
-	// Called for every vertex the material is visible on.
+	//VERTEX.x += 50.0;
 }
 
-void fragment() 
+void fragment()
 {
 	vec3 backgroundColor = vec3(1.0, 1.0, 1.0);
 	backgroundColor = drawGrid(UV, backgroundColor, BLACK, 100.0, 1.5);
 	backgroundColor = drawGrid(UV, backgroundColor, GREY, 10.0, 1.0);
-	
+
 	COLOR = vec4(backgroundColor, 1.0);
 }
 
