@@ -1,6 +1,27 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+//uniform vec2 mat2_col_0;
+//uniform vec2 mat2_col_1;
+
+uniform float total_elapsed_time;
+//uniform vec3 lightPosition;
+
+vec3 roatateVec3_around_y_axis(vec3 vecToRotate, float rotationAmount_rad)
+{
+	vec3 rotMat_col0 = vec3(cos(rotationAmount_rad), 0.0, -sin(rotationAmount_rad));
+	vec3 rotMat_col1 = vec3(0.0, 1.0, 0.0);
+	vec3 rotMat_col2 = vec3(-sin(rotationAmount_rad), 0.0, cos(rotationAmount_rad));
+	
+	rotMat_col0 = rotMat_col0 * vecToRotate.x;
+	rotMat_col1 = rotMat_col1 * vecToRotate.y;
+	rotMat_col2 = rotMat_col2 * vecToRotate.z;
+	
+	vec3 rotatedVec = rotMat_col0 + rotMat_col1 + rotMat_col2;
+	
+	return rotatedVec;
+}
+
 void vertex() {
 	// Called for every vertex the material is visible on.
 }
@@ -8,6 +29,10 @@ void vertex() {
 void fragment() {
 	
 	vec3 spotLightPos = vec3(2.0, 2.0, 0.0);
+	
+	spotLightPos = roatateVec3_around_y_axis(spotLightPos, total_elapsed_time);
+	
+	//spotLightPos = LightPos
 	
 	vec4 hitCOLOR = vec4(1.0, 0.0, 0.0, 1.0);
 	vec4 missCOLOR = vec4(1.0, 1.0, 1.0, 1.0);
