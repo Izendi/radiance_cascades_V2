@@ -3,6 +3,20 @@ render_mode unshaded;
 
 uniform sampler2D src_tex;
 
+// Old more intuative simple version:
+vec3 DrawGrid(vec3 color, vec2 uv_coords, vec2 resolution, vec3 lineColor, float cellSpacing)
+{
+	vec2 center = uv_coords - 0.5;
+	vec2 cells = abs(fract(center * resolution / vec2(cellSpacing)) - 0.5);
+	float distToEdge = (1.0 - 2.0 * max(cells.x, cells.y));
+	float lines = smoothstep(0.0, 0.05, distToEdge);
+
+	color = mix(lineColor, color, lines);
+
+	return color;
+
+}
+
 void vertex()
 {
 	// Called for every vertex the material is visible on.

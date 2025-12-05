@@ -4,7 +4,7 @@ render_mode unshaded;
 //uniform vec2 mat2_col_0;
 //uniform vec2 mat2_col_1;
 
-uniform float total_elapsed_time;
+//uniform float total_elapsed_time;
 //uniform vec3 lightPosition;
 
 vec3 roatateVec3_around_y_axis(vec3 vecToRotate, float rotationAmount_rad)
@@ -30,7 +30,7 @@ void fragment() {
 	
 	vec3 spotLightPos = vec3(2.0, 2.0, 0.0);
 	
-	spotLightPos = roatateVec3_around_y_axis(spotLightPos, total_elapsed_time);
+	spotLightPos = roatateVec3_around_y_axis(spotLightPos, TIME);
 	
 	//spotLightPos = LightPos
 	

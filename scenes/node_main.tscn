@@ -21,7 +21,6 @@ size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gqu34"]
 shader = ExtResource("4_u0iwh")
-shader_parameter/total_elapsed_time = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_07a3n"]
 shader = ExtResource("5_gqu34")
@@ -118,7 +117,7 @@ offset_left = -0.03200054
 offset_top = -0.11000061
 offset_right = 0.03199768
 offset_bottom = -0.04800415
-text = "Circle SDF"
+text = "Circle RT"
 
 [node name="Button_3" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 1
@@ -133,6 +132,20 @@ offset_right = 0.03199768
 offset_bottom = -0.072006226
 text = "Grid Display"
 
+[node name="Button_4" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.057000004
+anchor_top = 0.772
+anchor_right = 0.943
+anchor_bottom = 0.9760001
+offset_left = -0.03200054
+offset_top = 0.088012695
+offset_right = 0.03199768
+offset_bottom = -0.0960083
+text = "SDF"
+
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_1" to="." method="_on_button_test_shader_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_2" to="." method="_on_button_sdf_circle_shader_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_3" to="." method="_on_button_grid_display_shader_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/Button_4" to="." method="_on_button_SDF_pressed"]
