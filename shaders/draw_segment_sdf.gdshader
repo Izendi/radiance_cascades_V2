@@ -1,5 +1,10 @@
 shader_type canvas_item;
 
+uniform sampler2D segmentLocationCoords_tex;
+uniform sampler2D segmentColors_tex;
+uniform int arrayLargestIndex;
+const int arraySize = 500;
+
 //uniform float total_elapsed_time;
 
 //Gets the t value for a lerp given two points and a value between them
@@ -58,8 +63,27 @@ vec2 rotate(vec2 p, float angle) {
 		);
 }
 
+float sdSegment( in vec2 p, in vec2 a, in vec2 b )
+{
+    vec2 pa = p-a, ba = b-a;
+    float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+    return length( pa - ba*h );
+}
+
 void vertex() {
 	// Called for every vertex the material is visible on.
+}
+
+vec4 read_data_position(int i)
+{
+	float u = (float(i) + 0.5) / float(arraySize);
+	return texture(segmentLocationCoords_tex, vec2(u, 0.5));
+}
+
+vec4 read_data_color(int i)
+{
+	float u = (float(i) + 0.5) / float(arraySize);
+	return texture(segmentColors_tex, vec2(u, 0.5));
 }
 
 void fragment()
@@ -72,7 +96,7 @@ void fragment()
 	vec2 NDC_coord = SCREEN_UV * 2.0 - 1.0;
 
 	vec2 centeredPixelCoords = (SCREEN_UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
-	centeredPixelCoords.x = -centeredPixelCoords.x;
+	//centeredPixelCoords.x = -centeredPixelCoords.x;
 	centeredPixelCoords.y = -centeredPixelCoords.y;
 
 	//I need to flip these or the coordinates don't seem to match up. Maybe a quirk of godot
@@ -85,16 +109,57 @@ void fragment()
 	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 10.0, 1.00);
 	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 100.0, 2.00);
 
-	float d = sdfCircle(centeredPixelCoords, 100.0);
+	//float d = sdfCircle(centeredPixelCoords, 100.0);
 
-	centeredPixelCoords = rotate(vec2(centeredPixelCoords.x + 100.0, centeredPixelCoords.y + 50.0), TIME);
+	//centeredPixelCoords = rotate(vec2(centeredPixelCoords.x + 100.0, centeredPixelCoords.y + 50.0), TIME);
 	//centeredPixelCoords = rotate(centeredPixelCoords, 23);
 
-	float d2 = sdRoundedX(centeredPixelCoords, 200.0, 25.0);
+	//float d2 = sdRoundedX(centeredPixelCoords, 200.0, 25.0);
+	
+	// ----------------- NEW ----------------------
 
-	finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d2));
+	for(int i = 0; i < arraySize; i++)
+	{
+		if(i >= arrayLargestIndex)
+		{
+			break;
+		}
+		
+		vec4 v_location = read_data_position(i);
+		vec4 v_color = read_data_color(i);
+		
+		vec2 clickPos = vec2(v_location.x, v_location.y);
+		vec2 releasePos = vec2(v_location.z, v_location.w);
+		
+		vec2 centeredGraphPixelCoords_click = clickPos - (resolution * 0.5);
+		vec2 centeredGraphPixelCoords_release = releasePos - (resolution * 0.5);
+		
+		//centeredGraphPixelCoords_click.y = -centeredGraphPixelCoords_click.y;
+		//centeredGraphPixelCoords_release.y = -centeredGraphPixelCoords_release.y;
+		
+		//vec2 updatedCoords = centeredPixelCoords - centeredGraphPixelCoords;
+		//updatedCoords = vec2(-updatedCoords.x, updatedCoords.y);
+		//float d_value = sdfCircle(updatedCoords, 25.0);
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - 10.0;
+		
+		finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d_value));
+		
+	}
+	
+		COLOR = vec4(finalColor, 1.0);
+	
+	//if(arrayLargestIndex > 1)
+	//{
+		//vec4 testVec = read_data_position(1);
+		//
+		//COLOR = vec4(testVec.x/500.0, 0.0, 0.0, 1.0);
+	//}
+	
 
-	COLOR = vec4(finalColor, 1.0);
+	
+
+	
+	
 }
 
 //void light() {

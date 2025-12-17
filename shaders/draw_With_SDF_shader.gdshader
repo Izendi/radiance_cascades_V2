@@ -1,8 +1,5 @@
 shader_type canvas_item;
 
-//uniform float total_elapsed_time;
-
-//Gets the t value for a lerp given two points and a value between them
 float inverseLerp(float point, float minValue, float maxValue)
 {
 	return (point - minValue) / (maxValue - minValue);
@@ -62,8 +59,7 @@ void vertex() {
 	// Called for every vertex the material is visible on.
 }
 
-void fragment()
-{
+void fragment() {
 	float x_res = 1.0 / SCREEN_PIXEL_SIZE.x;
 	float y_res = 1.0 / SCREEN_PIXEL_SIZE.y;
 
@@ -85,19 +81,6 @@ void fragment()
 	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 10.0, 1.00);
 	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 100.0, 2.00);
 
-	float d = sdfCircle(centeredPixelCoords, 100.0);
-
-	centeredPixelCoords = rotate(vec2(centeredPixelCoords.x + 100.0, centeredPixelCoords.y + 50.0), TIME);
-	//centeredPixelCoords = rotate(centeredPixelCoords, 23);
-
-	float d2 = sdRoundedX(centeredPixelCoords, 200.0, 25.0);
-
-	finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d2));
 
 	COLOR = vec4(finalColor, 1.0);
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the CanvasItem.
-//	// Uncomment to replace the default light processing function with this one.
-//}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bdnu8fnyer222"]
+[gd_scene load_steps=21 format=3 uid="uid://bdnu8fnyer222"]
 
 [ext_resource type="Script" uid="uid://7pclqypncw2c" path="res://scenes/node_main_script.gd" id="1_ta4a1"]
 [ext_resource type="Shader" uid="uid://t84ols7oncvw" path="res://shaders/display_1_shader.gdshader" id="2_lbbxc"]
@@ -6,6 +6,9 @@
 [ext_resource type="Shader" uid="uid://mv78gxwyahhe" path="res://shaders/circle_sdf_shader.gdshader" id="4_u0iwh"]
 [ext_resource type="Shader" uid="uid://buekpfuu244t1" path="res://shaders/grid_background_shader.gdshader" id="5_gqu34"]
 [ext_resource type="Shader" uid="uid://dwepgphsroufn" path="res://shaders/sdf_test_shader.gdshader" id="6_07a3n"]
+[ext_resource type="Shader" uid="uid://ditx2cnytp3be" path="res://shaders/draw_With_SDF_shader.gdshader" id="7_1y5ni"]
+[ext_resource type="Shader" uid="uid://dc3lncj52arvj" path="res://shaders/draw_segment_sdf.gdshader" id="7_748q6"]
+[ext_resource type="Shader" uid="uid://buirkvg4ggf1h" path="res://shaders/pingPong/mouse_pingPong_shader.gdshader" id="8_47mj3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0iwh"]
 shader = ExtResource("2_lbbxc")
@@ -27,6 +30,22 @@ shader = ExtResource("5_gqu34")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1y5ni"]
 shader = ExtResource("6_07a3n")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxnwi"]
+shader = ExtResource("7_748q6")
+shader_parameter/arrayLargestIndex = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ig1kv"]
+size = Vector2(512, 512)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_47mj3"]
+shader = ExtResource("7_1y5ni")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_748q6"]
+shader = ExtResource("8_47mj3")
+shader_parameter/mousePos = Vector2(0, 0)
+shader_parameter/mouseClick = 0
+shader_parameter/viewport_size = Vector2(0, 0)
 
 [node name="Node2D_main" type="Node2D"]
 script = ExtResource("1_ta4a1")
@@ -73,6 +92,13 @@ material = SubResource("ShaderMaterial_1y5ni")
 position = Vector2(256, 256)
 mesh = SubResource("QuadMesh_lbbxc")
 
+[node name="SubViewport_5" type="SubViewport" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_5"]
+material = SubResource("ShaderMaterial_cxnwi")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_ig1kv")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
@@ -87,10 +113,10 @@ anchors_preset = -1
 anchor_left = 0.054
 anchor_top = 0.039
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.86700004
 offset_left = -0.044000626
 offset_top = 0.015999794
-offset_bottom = -1.5258789e-05
+offset_bottom = 0.04798889
 grow_horizontal = 2
 
 [node name="Button_1" type="Button" parent="CanvasLayer/Control/Panel"]
@@ -99,53 +125,106 @@ anchors_preset = -1
 anchor_left = 0.057000004
 anchor_top = 0.041
 anchor_right = 0.943
-anchor_bottom = 0.24400002
+anchor_bottom = 0.18300001
 offset_left = -0.03200054
 offset_top = -0.08599949
 offset_right = 0.03199768
-offset_bottom = -0.024002075
+offset_bottom = -0.018001556
 text = "Test Shader"
 
 [node name="Button_2" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.057000004
-anchor_top = 0.28500003
+anchor_top = 0.224
 anchor_right = 0.943
-anchor_bottom = 0.48800004
+anchor_bottom = 0.35000002
 offset_left = -0.03200054
-offset_top = -0.11000061
+offset_top = -0.10400009
 offset_right = 0.03199768
-offset_bottom = -0.04800415
+offset_bottom = -0.099998474
 text = "Circle RT"
 
 [node name="Button_3" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.057000004
-anchor_top = 0.528
+anchor_top = 0.386
 anchor_right = 0.943
-anchor_bottom = 0.73200005
+anchor_bottom = 0.512
 offset_left = -0.03200054
-offset_top = 0.11201477
+offset_top = 0.044006348
 offset_right = 0.03199768
-offset_bottom = -0.072006226
+offset_bottom = 0.04800415
 text = "Grid Display"
 
 [node name="Button_4" type="Button" parent="CanvasLayer/Control/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.057000004
-anchor_top = 0.772
-anchor_right = 0.943
-anchor_bottom = 0.9760001
-offset_left = -0.03200054
-offset_top = 0.088012695
-offset_right = 0.03199768
-offset_bottom = -0.0960083
+anchor_top = 0.55300003
+anchor_right = 0.94900006
+anchor_bottom = 0.679
+offset_left = 0.96799946
+offset_top = -0.037994385
+offset_right = -0.024017334
+offset_bottom = -0.033996582
 text = "SDF"
+
+[node name="Button_5" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.062000003
+anchor_top = 0.707
+anchor_right = 0.943
+anchor_bottom = 0.83300006
+offset_left = 0.087999344
+offset_top = 0.07800293
+offset_right = 1.0319977
+offset_bottom = 0.08200073
+text = "Drawing with SDFs"
+
+[node name="Button_6" type="Button" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.062000003
+anchor_top = 0.86200005
+anchor_right = 0.943
+anchor_bottom = 0.98800004
+offset_left = 0.087999344
+offset_top = -0.052001953
+offset_right = 1.0319977
+offset_bottom = -0.04798889
+text = "Drawing Segments"
+
+[node name="SubViewport_mouseClicks" type="SubViewport" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_mouseClicks"]
+material = SubResource("ShaderMaterial_47mj3")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_lbbxc")
+
+[node name="PingPongRoot" type="Node2D" parent="."]
+
+[node name="SubViewport_A" type="SubViewport" parent="PingPongRoot"]
+render_target_update_mode = 0
+
+[node name="MeshInstance2D_A" type="MeshInstance2D" parent="PingPongRoot/SubViewport_A"]
+material = SubResource("ShaderMaterial_748q6")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_lbbxc")
+
+[node name="SubViewport_B" type="SubViewport" parent="PingPongRoot"]
+render_target_update_mode = 0
+
+[node name="MeshInstance2D_B" type="MeshInstance2D" parent="PingPongRoot/SubViewport_B"]
+material = SubResource("ShaderMaterial_748q6")
+position = Vector2(256, 256)
+mesh = SubResource("QuadMesh_lbbxc")
 
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_1" to="." method="_on_button_test_shader_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_2" to="." method="_on_button_sdf_circle_shader_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_3" to="." method="_on_button_grid_display_shader_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Panel/Button_4" to="." method="_on_button_SDF_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/Button_5" to="." method="_on_button_draw_with_sdfs_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Panel/Button_6" to="." method="_on_button_segment_draw_pressed"]
