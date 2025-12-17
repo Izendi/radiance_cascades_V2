@@ -3,7 +3,13 @@ shader_type canvas_item;
 uniform sampler2D segmentLocationCoords_tex;
 uniform sampler2D segmentColors_tex;
 uniform int arrayLargestIndex;
+
 const int arraySize = 500;
+
+uniform vec2 currentClickPosition;
+uniform vec2 currentMousePosition;
+uniform int isMouseHeld;
+//uniform vec4 currentSelectedColor;
 
 //uniform float total_elapsed_time;
 
@@ -117,7 +123,19 @@ void fragment()
 	//float d2 = sdRoundedX(centeredPixelCoords, 200.0, 25.0);
 	
 	// ----------------- NEW ----------------------
-
+	
+	if(isMouseHeld == 1)
+	{
+		//uniform vec4 currentSelectedColor;
+		
+		vec2 centeredGraphPixelCoords_click = currentClickPosition - (resolution * 0.5);
+		vec2 centeredGraphPixelCoords_release = currentMousePosition - (resolution * 0.5);
+		
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - 10.0;
+		
+		finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d_value));
+	}
+	
 	for(int i = 0; i < arraySize; i++)
 	{
 		if(i >= arrayLargestIndex)

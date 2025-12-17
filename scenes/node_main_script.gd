@@ -10,6 +10,7 @@ extends Node2D
 @onready var bool_mouseClickIsReleased: bool = true
 @onready var bool_needToGenerateNewLineSDFfromInputs = false
 @onready var mousePosition_click: Vector2 = Vector2(0.0, 0.0)
+@onready var mousePositionPlaceholder_release: Vector2 = Vector2(0.0, 0.0)
 @onready var mousePosition_release: Vector2 = Vector2(0.0, 0.0)
 @onready var currentSelectedColor: Vector4 = Vector4(0.8, 0.1, 0.1, 1.0)
 
@@ -83,6 +84,16 @@ func _process(delta):
 		bool_mouseClickIsHeld = true
 		mousePosition_click = get_viewport().get_mouse_position()
 		print(mousePosition_click)
+	
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		mousePositionPlaceholder_release = get_viewport().get_mouse_position()
+		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		#$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", sdfSSLocation_tex)
+		#print(mousePositionPlaceholder_release)
+	else:
+		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
 	
 	if Input.is_action_just_released("click"):
 		bool_mouseClickIsReleased = false

@@ -34,6 +34,9 @@ shader = ExtResource("6_07a3n")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxnwi"]
 shader = ExtResource("7_748q6")
 shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_ig1kv"]
 size = Vector2(512, 512)
