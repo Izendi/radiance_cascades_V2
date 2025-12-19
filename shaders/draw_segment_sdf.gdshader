@@ -9,7 +9,9 @@ const int arraySize = 500;
 uniform vec2 currentClickPosition;
 uniform vec2 currentMousePosition;
 uniform int isMouseHeld;
-//uniform vec4 currentSelectedColor;
+
+uniform float segmentThickness;
+uniform vec4 currentSelectedColor;
 
 //uniform float total_elapsed_time;
 
@@ -131,9 +133,9 @@ void fragment()
 		vec2 centeredGraphPixelCoords_click = currentClickPosition - (resolution * 0.5);
 		vec2 centeredGraphPixelCoords_release = currentMousePosition - (resolution * 0.5);
 		
-		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - 10.0;
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - segmentThickness;
 		
-		finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d_value));
+		finalColor = mix(vec3(currentSelectedColor.x, currentSelectedColor.y, currentSelectedColor.z), finalColor, step(0.0, d_value));
 	}
 	
 	for(int i = 0; i < arraySize; i++)
@@ -158,9 +160,9 @@ void fragment()
 		//vec2 updatedCoords = centeredPixelCoords - centeredGraphPixelCoords;
 		//updatedCoords = vec2(-updatedCoords.x, updatedCoords.y);
 		//float d_value = sdfCircle(updatedCoords, 25.0);
-		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - 10.0;
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - v_color.w;
 		
-		finalColor = mix(vec3(0.8, 0.1, 0.1), finalColor, step(0.0, d_value));
+		finalColor = mix(vec3(v_color.x, v_color.y, v_color.z), finalColor, step(0.0, d_value));
 		
 	}
 	

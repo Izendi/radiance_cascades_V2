@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var fullScreenQuadTexture_1: Texture = $SubViewport_4.get_texture()
+@onready var fullScreenQuadTexture_1: Texture = $SubViewport_5.get_texture()
 #@onready var bool_displayShaderUpdated: bool = false
 
 @onready var mouseTex_A: Texture2D
@@ -16,6 +16,8 @@ extends Node2D
 
 @onready var currentArrayInex: int = 0
 
+@onready var segmentThickness: float = 5.0
+
 var time_passed: float = 0.0
 
 var ping_is_A := true
@@ -26,7 +28,7 @@ var ping_is_A := true
 @onready var sdfSSLocation_tex : ImageTexture
 @onready var sdfSSColor_tex : ImageTexture
 
-func addValueToTextureArray(arrayIndex: int, startLocation: Vector2, endLocation: Vector2, chosenColor: Vector4):
+func addValueToTextureArray(arrayIndex: int, startLocation: Vector2, endLocation: Vector2, chosenColor: Vector4, thickness: float):
 	if arrayIndex >= storageTextureWidth || arrayIndex < 0:
 		return
 	
@@ -41,15 +43,21 @@ func addValueToTextureArray(arrayIndex: int, startLocation: Vector2, endLocation
 	sdfSSColor.set_pixel(
 		arrayIndex,
 		0,
-		Color(chosenColor.x, chosenColor.y, chosenColor.z, chosenColor.w)
+		Color(chosenColor.x, chosenColor.y, chosenColor.z, thickness) #we don't care about the w value so this can be used to store the thickness
 	)
 	
 	sdfSSLocation_tex.set_image(sdfSSLocation)
 	sdfSSColor_tex.set_image(sdfSSColor)
+	
+	
+	
 
 func _ready():
 	
 	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1) 
+	
+	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
+	%Label_thickness.text = str(segmentThickness)
 	
 	#Create ping pong texture:
 	var texImage := Image.create(512, 512, false, Image.FORMAT_RGBA8)
@@ -85,12 +93,12 @@ func _process(delta):
 		mousePosition_click = get_viewport().get_mouse_position()
 		print(mousePosition_click)
 	
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		mousePositionPlaceholder_release = get_viewport().get_mouse_position()
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
-		#$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", sdfSSLocation_tex)
+		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
 		#print(mousePositionPlaceholder_release)
 	else:
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
@@ -103,7 +111,7 @@ func _process(delta):
 		print ("\n --- \n")
 	
 	if bool_needToGenerateNewLineSDFfromInputs == true:
-		addValueToTextureArray(currentArrayInex, mousePosition_click, mousePosition_release, currentSelectedColor)
+		addValueToTextureArray(currentArrayInex, mousePosition_click, mousePosition_release, currentSelectedColor, segmentThickness)
 		currentArrayInex = currentArrayInex + 1
 		bool_needToGenerateNewLineSDFfromInputs = false
 	
@@ -111,7 +119,7 @@ func _process(delta):
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
 	
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		isMousePressed = 1
 	else:
 		isMousePressed = 0
@@ -176,3 +184,36 @@ func _on_button_draw_with_sdfs_pressed():
 func _on_button_segment_draw_pressed():
 	fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
 	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+
+
+func _on_option_button_item_selected(index):
+	if index == 0: #test shader
+		fullScreenQuadTexture_1 = $SubViewport_1.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 1: #circle RT
+		fullScreenQuadTexture_1 = $SubViewport_2.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 2: #Grid Display
+		fullScreenQuadTexture_1 = $SubViewport_3.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 3: #SDF
+		fullScreenQuadTexture_1 = $SubViewport_4.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 4: #Drawing with SDFs
+		fullScreenQuadTexture_1 = $PingPongRoot/SubViewport_A.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 5: #Drawing Segments
+		fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
+		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+	elif index == 6: #cascade level 5
+		pass
+
+
+func _on_h_slider_segment_thickness_value_changed(value):
+	%Label_thickness.text = str(value)
+	segmentThickness = value
+	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
+
+
+func _on_color_picker_button_color_changed(color):
+	currentSelectedColor = Vector4(color.r, color.g, color.b, segmentThickness)
