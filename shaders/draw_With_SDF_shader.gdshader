@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+uniform vec2 virtual_resolution = vec2(512.0, 512.0);
+
 float inverseLerp(float point, float minValue, float maxValue)
 {
 	return (point - minValue) / (maxValue - minValue);
@@ -60,14 +62,14 @@ void vertex() {
 }
 
 void fragment() {
-	float x_res = 1.0 / SCREEN_PIXEL_SIZE.x;
-	float y_res = 1.0 / SCREEN_PIXEL_SIZE.y;
+	//float x_res = 1.0 / SCREEN_PIXEL_SIZE.x;
+	//float y_res = 1.0 / SCREEN_PIXEL_SIZE.y;
 
-	vec2 resolution = vec2(x_res, y_res);
+	vec2 resolution = vec2(virtual_resolution.x, virtual_resolution.y);
 
-	vec2 NDC_coord = SCREEN_UV * 2.0 - 1.0;
+	vec2 NDC_coord = UV * 2.0 - 1.0;
 
-	vec2 centeredPixelCoords = (SCREEN_UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
+	vec2 centeredPixelCoords = (UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
 	centeredPixelCoords.x = -centeredPixelCoords.x;
 	centeredPixelCoords.y = -centeredPixelCoords.y;
 
@@ -76,10 +78,10 @@ void fragment() {
 	NDC_coord.y = -NDC_coord.y;
 	NDC_coord.x = -NDC_coord.x;
 
-	vec3 finalColor = BackgroundColor(SCREEN_UV);
+	vec3 finalColor = BackgroundColor(UV);
 
-	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 10.0, 1.00);
-	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 100.0, 2.00);
+	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 10.0, 1.00);
+	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 100.0, 2.00);
 
 
 	COLOR = vec4(finalColor, 1.0);

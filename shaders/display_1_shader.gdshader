@@ -1,6 +1,8 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+uniform vec2 virtual_resolution = vec2(512.0, 512.0);
+
 uniform sampler2D src_tex;
 
 // Old more intuative simple version:

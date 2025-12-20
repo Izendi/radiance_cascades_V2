@@ -12,24 +12,29 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0iwh"]
 shader = ExtResource("2_lbbxc")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ta4a1"]
 size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lbbxc"]
 shader = ExtResource("2_ta4a1")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="QuadMesh" id="QuadMesh_lbbxc"]
 size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gqu34"]
 shader = ExtResource("4_u0iwh")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_07a3n"]
 shader = ExtResource("5_gqu34")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1y5ni"]
 shader = ExtResource("6_07a3n")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cxnwi"]
 shader = ExtResource("7_748q6")
@@ -39,12 +44,14 @@ shader_parameter/currentMousePosition = Vector2(0, 0)
 shader_parameter/isMouseHeld = 0
 shader_parameter/segmentThickness = 0.0
 shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="QuadMesh" id="QuadMesh_ig1kv"]
 size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_47mj3"]
 shader = ExtResource("7_1y5ni")
+shader_parameter/virtual_resolution = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_748q6"]
 shader = ExtResource("8_47mj3")

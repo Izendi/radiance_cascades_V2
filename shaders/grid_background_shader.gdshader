@@ -5,6 +5,8 @@ const vec3 BLACK = vec3(0.0, 0.0, 0.0);
 const vec3 WHITE = vec3(1.0, 1.0, 1.0);
 const vec3 GREY = vec3(0.6, 0.6, 0.6);
 
+uniform vec2 virtual_resolution = vec2(512.0, 512.0);
+
 float inverseLerp(float v, float minValue, float maxValue)
 {
     return (v - minValue) / (maxValue - minValue);

@@ -13,6 +13,8 @@ uniform int isMouseHeld;
 uniform float segmentThickness;
 uniform vec4 currentSelectedColor;
 
+uniform vec2 virtual_resolution = vec2(512.0, 512.0);
+
 //uniform float total_elapsed_time;
 
 //Gets the t value for a lerp given two points and a value between them
@@ -96,26 +98,26 @@ vec4 read_data_color(int i)
 
 void fragment()
 {
-	float x_res = 1.0 / SCREEN_PIXEL_SIZE.x;
-	float y_res = 1.0 / SCREEN_PIXEL_SIZE.y;
+	//float x_res = 1.0 / SCREEN_PIXEL_SIZE.x;
+	//float y_res = 1.0 / SCREEN_PIXEL_SIZE.y;
 
-	vec2 resolution = vec2(x_res, y_res);
+	vec2 resolution = vec2(virtual_resolution.x, virtual_resolution.y);
 
-	vec2 NDC_coord = SCREEN_UV * 2.0 - 1.0;
+	vec2 NDC_coord = UV * 2.0 - 1.0;
 
-	vec2 centeredPixelCoords = (SCREEN_UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
+	vec2 centeredPixelCoords = (UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
 	//centeredPixelCoords.x = -centeredPixelCoords.x;
-	centeredPixelCoords.y = -centeredPixelCoords.y;
+	//centeredPixelCoords.y = -centeredPixelCoords.y;
 
 	//I need to flip these or the coordinates don't seem to match up. Maybe a quirk of godot
 	// or I am misunderstanding something.
 	NDC_coord.y = -NDC_coord.y;
 	NDC_coord.x = -NDC_coord.x;
 
-	vec3 finalColor = BackgroundColor(SCREEN_UV);
+	vec3 finalColor = BackgroundColor(UV);
 
-	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 10.0, 1.00);
-	finalColor = DrawGrid(finalColor, SCREEN_UV, resolution, vec3(0.0), 100.0, 2.00);
+	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 10.0, 1.00);
+	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 100.0, 2.00);
 
 	//float d = sdfCircle(centeredPixelCoords, 100.0);
 
@@ -123,63 +125,63 @@ void fragment()
 	//centeredPixelCoords = rotate(centeredPixelCoords, 23);
 
 	//float d2 = sdRoundedX(centeredPixelCoords, 200.0, 25.0);
-	
+
 	// ----------------- NEW ----------------------
-	
+
 	if(isMouseHeld == 1)
 	{
 		//uniform vec4 currentSelectedColor;
-		
+
 		vec2 centeredGraphPixelCoords_click = currentClickPosition - (resolution * 0.5);
 		vec2 centeredGraphPixelCoords_release = currentMousePosition - (resolution * 0.5);
-		
+
 		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - segmentThickness;
-		
+
 		finalColor = mix(vec3(currentSelectedColor.x, currentSelectedColor.y, currentSelectedColor.z), finalColor, step(0.0, d_value));
 	}
-	
+
 	for(int i = 0; i < arraySize; i++)
 	{
 		if(i >= arrayLargestIndex)
 		{
 			break;
 		}
-		
+
 		vec4 v_location = read_data_position(i);
 		vec4 v_color = read_data_color(i);
-		
+
 		vec2 clickPos = vec2(v_location.x, v_location.y);
 		vec2 releasePos = vec2(v_location.z, v_location.w);
-		
+
 		vec2 centeredGraphPixelCoords_click = clickPos - (resolution * 0.5);
 		vec2 centeredGraphPixelCoords_release = releasePos - (resolution * 0.5);
-		
+
 		//centeredGraphPixelCoords_click.y = -centeredGraphPixelCoords_click.y;
 		//centeredGraphPixelCoords_release.y = -centeredGraphPixelCoords_release.y;
-		
+
 		//vec2 updatedCoords = centeredPixelCoords - centeredGraphPixelCoords;
 		//updatedCoords = vec2(-updatedCoords.x, updatedCoords.y);
 		//float d_value = sdfCircle(updatedCoords, 25.0);
 		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - v_color.w;
-		
+
 		finalColor = mix(vec3(v_color.x, v_color.y, v_color.z), finalColor, step(0.0, d_value));
-		
+
 	}
-	
+
 		COLOR = vec4(finalColor, 1.0);
-	
+
 	//if(arrayLargestIndex > 1)
 	//{
 		//vec4 testVec = read_data_position(1);
 		//
 		//COLOR = vec4(testVec.x/500.0, 0.0, 0.0, 1.0);
 	//}
-	
 
-	
 
-	
-	
+
+
+
+
 }
 
 //void light() {
