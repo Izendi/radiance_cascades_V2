@@ -54,7 +54,7 @@ func addValueToTextureArray(arrayIndex: int, startLocation: Vector2, endLocation
 
 func _ready():
 	
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1) 
+	$MeshInstance2D_512.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1) 
 	
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
 	%Label_thickness.text = str(segmentThickness)
@@ -155,58 +155,44 @@ func _process(delta):
 	#$SubViewport_2/MeshInstance2D.material.set_shader_parameter("total_elapsed_time", time_passed)
 	#$SubViewport_4/MeshInstance2D.material.set_shader_parameter("total_elapsed_time", time_passed)
 
-func _on_button_test_shader_pressed():
-	fullScreenQuadTexture_1 = $SubViewport_1.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
-
-func _on_button_sdf_circle_shader_pressed():
-	fullScreenQuadTexture_1 = $SubViewport_2.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
-
-func _on_button_grid_display_shader_pressed():
-	fullScreenQuadTexture_1 = $SubViewport_3.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
-
-func _on_button_SDF_pressed():
-	fullScreenQuadTexture_1 = $SubViewport_4.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
-
-func _on_button_draw_with_sdfs_pressed():
-	
-	fullScreenQuadTexture_1 = $PingPongRoot/SubViewport_A.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
-
-func _on_button_segment_draw_pressed():
-	fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
-	$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
-
+func activateRenderQuadWithResolution(res: int, tex: Texture):
+	if res == 512:
+		$MeshInstance2D_512.visible = true
+		$MeshInstance2D_1024.visible = false
+		$MeshInstance2D_512.material.set_shader_parameter("src_tex", tex)
+	elif res == 1024:
+		$MeshInstance2D_512.visible = false
+		$MeshInstance2D_1024.visible = true
+		$MeshInstance2D_1024.material.set_shader_parameter("src_tex", tex)
+	else: 
+		#assume 512 res is the default
+		$MeshInstance2D_512.visible = true
+		$MeshInstance2D_1024.visible = false
+		$MeshInstance2D_512.material.set_shader_parameter("src_tex", tex)
 
 func _on_option_button_item_selected(index):
 	if index == 0: #test shader
 		fullScreenQuadTexture_1 = $SubViewport_1.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		#$MeshInstance2D_512.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 1: #circle RT
 		fullScreenQuadTexture_1 = $SubViewport_2.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 2: #Grid Display
 		fullScreenQuadTexture_1 = $SubViewport_3.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 3: #SDF
 		fullScreenQuadTexture_1 = $SubViewport_4.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 4: #Drawing with SDFs
 		fullScreenQuadTexture_1 = $PingPongRoot/SubViewport_A.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 5: #Drawing Segments
 		fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
-		$MeshInstance2D.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 6: #cascade level 5
-		pass
+		fullScreenQuadTexture_1 = $SubViewport_CL_4.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 
 
 func _on_h_slider_segment_thickness_value_changed(value):
