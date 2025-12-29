@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
-uniform sampler2D segmentLocationCoords_tex;
-uniform sampler2D segmentColors_tex;
+uniform sampler2D segmentLocationCoords_tex: filter_nearest, repeat_disable;
+uniform sampler2D segmentColors_tex: filter_nearest, repeat_disable;
 uniform int arrayLargestIndex;
 
 const int SDF_ARRAY_SIZE = 500;
@@ -62,9 +62,17 @@ vec2 rotate_anticlockwise(vec2 v, float angle)
 
 float sdSegment( in vec2 p, in vec2 a, in vec2 b )
 {
-    vec2 pa = p-a, ba = b-a;
-    float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-    return length( pa - ba*h );
+	vec2 pa = p-a, ba = b-a;
+	
+	// -- SAFETY CHECK --
+	//float denom = dot(ba, ba);
+	//if (denom < 1e-6) 
+	//{
+		//return length(pa);
+	//}
+	
+	float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+	return length( pa - ba*h );
 }
 
 
@@ -106,9 +114,8 @@ void fragment()
 	ray_dir_normalized = rotate_anticlockwise(ray_dir_normalized, ray_angle_radians);
 	
 	// 3. Find ray starting position
-	float C4_length = C4_START_DISTANCE;
 	vec2 ray_start_pos = current_probe_pos + (ray_dir_normalized * C4_START_DISTANCE);
-	float march_distance = C4_length;
+	float march_distance = MAX_RAY_LENGTH;
 	
 	float ray_distance_from_probe = length(ray_start_pos - current_probe_pos);
 	
@@ -123,6 +130,8 @@ void fragment()
 	{
 		current_ray_march_step = current_ray_march_step + 1;
 		
+		march_distance = MAX_RAY_LENGTH;
+		
 		if(ray_distance_from_probe > MAX_RAY_LENGTH)
 		{
 			break;
@@ -130,7 +139,7 @@ void fragment()
 		
 		for(int i = 0; i < SDF_ARRAY_SIZE; i++)
 		{
-			if(i >= arrayLargestIndex)
+			if(i > arrayLargestIndex)
 			{
 				break;
 			}
@@ -184,7 +193,7 @@ void fragment()
 	}
 	else
 	{
-		COLOR = vec4(0.0, 0.0, 1.0, 1.0); //black default
+		COLOR = vec4(0.0, 0.0, 0.0, 1.0); //black default
 	}
 }
 
