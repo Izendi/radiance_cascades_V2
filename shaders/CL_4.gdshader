@@ -60,6 +60,12 @@ vec2 rotate_anticlockwise(vec2 v, float angle)
 		);
 }
 
+float sdSegment( in vec2 p, in vec2 a, in vec2 b )
+{
+    vec2 pa = p-a, ba = b-a;
+    float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+    return length( pa - ba*h );
+}
 
 
 void vertex() {
@@ -101,8 +107,8 @@ void fragment()
 	
 	// 3. Find ray starting position
 	float C4_length = C4_START_DISTANCE;
-	vec2 ray_start_pos = mod(texel_position, spacing_between_probes);
-	float march_distance = C4_START_DISTANCE;
+	vec2 ray_start_pos = current_probe_pos + (ray_dir_normalized * C4_START_DISTANCE);
+	float march_distance = C4_length;
 	
 	float ray_distance_from_probe = length(ray_start_pos - current_probe_pos);
 	
@@ -115,6 +121,8 @@ void fragment()
 	
 	while(current_ray_march_step < MAX_NO_RAY_MARCH_STEPS)
 	{
+		current_ray_march_step = current_ray_march_step + 1;
+		
 		if(ray_distance_from_probe > MAX_RAY_LENGTH)
 		{
 			break;
@@ -132,16 +140,52 @@ void fragment()
 			
 			vec2 clickPos = vec2(v_location.x, v_location.y);
 			vec2 releasePos = vec2(v_location.z, v_location.w);
+			
+			// scale click and release position to 1024 by 1024 resolution, since segment drawing screen is 512 by 512:
+			clickPos = clickPos * 2.0;
+			releasePos = releasePos * 2.0;
+			
+			//Check if rays current position hits a segment
+			float currentPositionDistanceFromSegment = (sdSegment(current_ray_pos, clickPos, releasePos) - v_color.w);
+			if(currentPositionDistanceFromSegment < RAY_MARCH_HIT_THRESHOLD)
+			{
+				//HIT
+				hit_index = i;
+				break;
+			}
+			else
+			{
+				if(currentPositionDistanceFromSegment < march_distance)
+				{
+					//This will store the shortest march distance
+					march_distance = currentPositionDistanceFromSegment;
+				}
+			}
+			
 		}
 		
+		if(hit_index >= 0)
+		{
+			break;
+		}
+		
+		//March the shortest march distance found by checking the distances between this ray and all sdfs
+		current_ray_pos = current_ray_pos + (ray_dir_normalized * march_distance);
 		
 		ray_distance_from_probe = length(current_ray_pos - current_probe_pos);
 		
 	}
 	
-	
-	COLOR = vec4(UV, 0.0, 1.0);
-
+	if(hit_index >= 0)
+	{
+		//Store the color data in the C4 texture
+		vec4 v_color = read_data_color(hit_index);
+		COLOR = vec4(v_color.r, v_color.g, v_color.b, 1.0);
+	}
+	else
+	{
+		COLOR = vec4(0.0, 0.0, 1.0, 1.0); //black default
+	}
 }
 
 //void light() {

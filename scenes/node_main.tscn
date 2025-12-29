@@ -5,7 +5,6 @@
 [ext_resource type="Shader" uid="uid://c8fqqtj2xywd2" path="res://shaders/test_shader_1.gdshader" id="2_ta4a1"]
 [ext_resource type="Shader" uid="uid://d3lim0nvrajuh" path="res://shaders/display_2_shader.gdshader" id="3_cxnwi"]
 [ext_resource type="Shader" uid="uid://mv78gxwyahhe" path="res://shaders/circle_sdf_shader.gdshader" id="4_u0iwh"]
-[ext_resource type="Shader" uid="uid://buekpfuu244t1" path="res://shaders/grid_background_shader.gdshader" id="5_gqu34"]
 [ext_resource type="Shader" uid="uid://dwepgphsroufn" path="res://shaders/sdf_test_shader.gdshader" id="6_07a3n"]
 [ext_resource type="Shader" uid="uid://ditx2cnytp3be" path="res://shaders/draw_With_SDF_shader.gdshader" id="7_1y5ni"]
 [ext_resource type="Shader" uid="uid://dc3lncj52arvj" path="res://shaders/draw_segment_sdf.gdshader" id="7_748q6"]
@@ -37,9 +36,18 @@ size = Vector2(512, 512)
 shader = ExtResource("4_u0iwh")
 shader_parameter/virtual_resolution = Vector2(512, 512)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_07a3n"]
-shader = ExtResource("5_gqu34")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_08cwo"]
+shader = ExtResource("7_748q6")
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
 shader_parameter/virtual_resolution = Vector2(512, 512)
+
+[sub_resource type="QuadMesh" id="QuadMesh_jowvq"]
+size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1y5ni"]
 shader = ExtResource("6_07a3n")
@@ -118,15 +126,17 @@ material = SubResource("ShaderMaterial_gqu34")
 position = Vector2(256, 256)
 mesh = SubResource("QuadMesh_lbbxc")
 
-[node name="SubViewport_3" type="SubViewport" parent="."]
+[node name="SubViewport_seg_no_cent" type="SubViewport" parent="."]
 disable_3d = true
 handle_input_locally = false
 render_target_update_mode = 4
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_3"]
-material = SubResource("ShaderMaterial_07a3n")
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_seg_no_cent"]
+material = SubResource("ShaderMaterial_08cwo")
 position = Vector2(256, 256)
-mesh = SubResource("QuadMesh_lbbxc")
+mesh = SubResource("QuadMesh_jowvq")
+
+[node name="Camera2D" type="Camera2D" parent="SubViewport_seg_no_cent"]
 
 [node name="SubViewport_4" type="SubViewport" parent="."]
 disable_3d = true
@@ -177,7 +187,7 @@ popup/item_0/text = "Test Shader"
 popup/item_0/id = 0
 popup/item_1/text = "Circle RT"
 popup/item_1/id = 1
-popup/item_2/text = "Grid Display"
+popup/item_2/text = "seg no centering"
 popup/item_2/id = 2
 popup/item_3/text = "SDF"
 popup/item_3/id = 3

@@ -179,8 +179,8 @@ func _on_option_button_item_selected(index):
 		fullScreenQuadTexture_1 = $SubViewport_2.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 2: #Grid Display
-		fullScreenQuadTexture_1 = $SubViewport_3.get_texture()
-		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
+		fullScreenQuadTexture_1 = $SubViewport_seg_no_cent.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 	elif index == 3: #SDF
 		fullScreenQuadTexture_1 = $SubViewport_4.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)

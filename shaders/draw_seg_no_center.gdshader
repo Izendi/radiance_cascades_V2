@@ -114,7 +114,6 @@ void fragment()
 
 	// centeredPixelCoords is more like: current pixel / fragment position.
 	vec2 centeredPixelCoords = (UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
-	vec2 TLPixelCoords = UV * resolution;
 	//centeredPixelCoords.x = -centeredPixelCoords.x;
 	//centeredPixelCoords.y = -centeredPixelCoords.y;
 
@@ -141,10 +140,10 @@ void fragment()
 	{
 		//uniform vec4 currentSelectedColor;
 
-		//vec2 centeredGraphPixelCoords_click = currentClickPosition - (resolution * 0.5);
-		//vec2 centeredGraphPixelCoords_release = currentMousePosition - (resolution * 0.5);
+		vec2 centeredGraphPixelCoords_click = currentClickPosition - (resolution * 0.5);
+		vec2 centeredGraphPixelCoords_release = currentMousePosition - (resolution * 0.5);
 
-		float d_value = sdSegment(TLPixelCoords, currentClickPosition, currentMousePosition) - segmentThickness;
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - segmentThickness;
 
 		finalColor = mix(vec3(currentSelectedColor.x, currentSelectedColor.y, currentSelectedColor.z), finalColor, step(0.0, d_value));
 	}
@@ -162,7 +161,16 @@ void fragment()
 		vec2 clickPos = vec2(v_location.x, v_location.y);
 		vec2 releasePos = vec2(v_location.z, v_location.w);
 
-		float d_value = sdSegment(TLPixelCoords, clickPos, releasePos) - v_color.w;
+		vec2 centeredGraphPixelCoords_click = clickPos - (resolution * 0.5);
+		vec2 centeredGraphPixelCoords_release = releasePos - (resolution * 0.5);
+
+		//centeredGraphPixelCoords_click.y = -centeredGraphPixelCoords_click.y;
+		//centeredGraphPixelCoords_release.y = -centeredGraphPixelCoords_release.y;
+
+		//vec2 updatedCoords = centeredPixelCoords - centeredGraphPixelCoords;
+		//updatedCoords = vec2(-updatedCoords.x, updatedCoords.y);
+		//float d_value = sdfCircle(updatedCoords, 25.0);
+		float d_value = sdSegment(centeredPixelCoords, centeredGraphPixelCoords_click, centeredGraphPixelCoords_release) - v_color.w;
 
 		finalColor = mix(vec3(v_color.x, v_color.y, v_color.z), finalColor, step(0.0, d_value));
 
