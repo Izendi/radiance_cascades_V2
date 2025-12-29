@@ -190,7 +190,7 @@ func _on_option_button_item_selected(index):
 	elif index == 5: #Drawing Segments
 		fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
-	elif index == 6: #cascade level 5
+	elif index == 6: #cascade level 4
 		fullScreenQuadTexture_1 = $SubViewport_CL_4.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 

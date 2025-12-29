@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bdnu8fnyer222"]
+[gd_scene load_steps=27 format=3 uid="uid://bdnu8fnyer222"]
 
 [ext_resource type="Script" uid="uid://7pclqypncw2c" path="res://scenes/node_main_script.gd" id="1_ta4a1"]
 [ext_resource type="Shader" uid="uid://t84ols7oncvw" path="res://shaders/display_1_shader.gdshader" id="2_lbbxc"]
@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://ditx2cnytp3be" path="res://shaders/draw_With_SDF_shader.gdshader" id="7_1y5ni"]
 [ext_resource type="Shader" uid="uid://dc3lncj52arvj" path="res://shaders/draw_segment_sdf.gdshader" id="7_748q6"]
 [ext_resource type="Shader" uid="uid://buirkvg4ggf1h" path="res://shaders/pingPong/mouse_pingPong_shader.gdshader" id="8_47mj3"]
+[ext_resource type="Shader" uid="uid://612ra5xiiqjv" path="res://shaders/CL_4.gdshader" id="9_ig1kv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0iwh"]
 shader = ExtResource("2_lbbxc")
@@ -58,8 +59,17 @@ shader_parameter/virtual_resolution = Vector2(512, 512)
 size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ig1kv"]
-shader = ExtResource("4_u0iwh")
-shader_parameter/virtual_resolution = Vector2(512, 512)
+shader = ExtResource("9_ig1kv")
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/u_virtual_resolution = Vector2(1024, 1024)
+shader_parameter/u_C4_probe_offset = Vector2(16, 16)
+shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
+shader_parameter/u_no_rays_per_probe = 1024.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_gn17g"]
 size = Vector2(1024, 1024)
@@ -175,7 +185,7 @@ popup/item_4/text = "Drawing with SDFs"
 popup/item_4/id = 4
 popup/item_5/text = "Drawing Segments"
 popup/item_5/id = 5
-popup/item_6/text = "Cascade Lvl 5"
+popup/item_6/text = "Cascade Lvl 4 (top)"
 popup/item_6/id = 6
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/Control"]

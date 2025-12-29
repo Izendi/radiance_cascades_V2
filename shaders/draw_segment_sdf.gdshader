@@ -90,6 +90,13 @@ vec4 read_data_position(int i)
 	return texture(segmentLocationCoords_tex, vec2(u, 0.5));
 }
 
+vec4 read_2D_data_position(int ix, int iy, ivec2 arraySize2D)
+{
+	float ux = (float(ix) + 0.5) / float(arraySize2D.x);
+	float uy = (float(iy) + 0.5) / float(arraySize2D.y);
+	return texture(segmentLocationCoords_tex, vec2(ux, uy));
+}
+
 vec4 read_data_color(int i)
 {
 	float u = (float(i) + 0.5) / float(arraySize);
@@ -105,6 +112,7 @@ void fragment()
 
 	vec2 NDC_coord = UV * 2.0 - 1.0;
 
+	// centeredPixelCoords is more like: current pixel / fragment position.
 	vec2 centeredPixelCoords = (UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
 	//centeredPixelCoords.x = -centeredPixelCoords.x;
 	//centeredPixelCoords.y = -centeredPixelCoords.y;
