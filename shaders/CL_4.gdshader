@@ -92,7 +92,7 @@ const float RAY_MARCH_HIT_THRESHOLD = 0.6;
 
 uniform vec2 u_C4_probe_offset = vec2(16.0, 16.0);
 uniform vec2 u_C4_xy_NO_probes = vec2(32.0, 32.0);
-uniform float u_no_rays_per_probe = 1024.0;
+uniform float u_C4_no_rays_per_probe = 1024.0;
 
 
 void fragment()
@@ -108,7 +108,7 @@ void fragment()
 	
 	// 2. Find ray direction from the probe
 	vec2 local_grid_pos = mod(texel_position, spacing_between_probes);
-	float ray_angle_radians = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_no_rays_per_probe) + ((2.0 * PI) / (u_no_rays_per_probe * 2.0));
+	float ray_angle_radians = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C4_no_rays_per_probe) + ((2.0 * PI) / (u_C4_no_rays_per_probe * 2.0));
 	
 	vec2 ray_dir_normalized = vec2(1.0, 0.0);
 	ray_dir_normalized = rotate_anticlockwise(ray_dir_normalized, ray_angle_radians);

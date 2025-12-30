@@ -99,9 +99,29 @@ func _process(delta):
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
 		#print(mousePositionPlaceholder_release)
 	else:
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+	
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("u_C4_probe_offset", Vector2(16.0, 16.0));
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("u_C4_xy_NO_probes", Vector2(32.0, 32.0));
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("u_no_rays_per_probe", 1024);
+	
+	# CL 3
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("CL_4_Tex", $SubViewport_CL_4.get_texture());
+	
 	
 	if Input.is_action_just_released("click"):
 		bool_mouseClickIsReleased = false
@@ -118,6 +138,26 @@ func _process(delta):
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
 	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		isMousePressed = 1
@@ -192,6 +232,9 @@ func _on_option_button_item_selected(index):
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 6: #cascade level 4
 		fullScreenQuadTexture_1 = $SubViewport_CL_4.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	elif index == 7: #cascade level 3
+		fullScreenQuadTexture_1 = $SubViewport_CL_3.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 
 
