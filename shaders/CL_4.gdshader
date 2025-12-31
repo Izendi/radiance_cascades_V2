@@ -50,7 +50,7 @@ float remap(float point, float minValue, float maxValue, float newMinValue, floa
 }
 
 vec2 rotate_anticlockwise(vec2 v, float angle) 
-{
+{	
 	float c = cos(angle);
 	float s = sin(angle);
 	
@@ -111,7 +111,7 @@ void fragment()
 	float ray_angle_radians = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C4_no_rays_per_probe) + ((2.0 * PI) / (u_C4_no_rays_per_probe * 2.0));
 	
 	vec2 ray_dir_normalized = vec2(1.0, 0.0);
-	ray_dir_normalized = rotate_anticlockwise(ray_dir_normalized, ray_angle_radians);
+	ray_dir_normalized = rotate_anticlockwise(ray_dir_normalized, -ray_angle_radians);
 	
 	// 3. Find ray starting position
 	vec2 ray_start_pos = current_probe_pos + (ray_dir_normalized * C4_START_DISTANCE);

@@ -57,6 +57,7 @@ func _ready():
 	$MeshInstance2D_512.material.set_shader_parameter("src_tex", fullScreenQuadTexture_1) 
 	
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
 	%Label_thickness.text = str(segmentThickness)
 	
 	#Create ping pong texture:
@@ -109,11 +110,35 @@ func _process(delta):
 		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
 		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
 		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
+		
+		$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
+		$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
+		$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
+		$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("currentSelectedColor", currentSelectedColor)
 		#print(mousePositionPlaceholder_release)
 	else:
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
 		$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
 		$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
+		$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 0)
 	
 	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("u_C4_probe_offset", Vector2(16.0, 16.0));
 	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("u_C4_xy_NO_probes", Vector2(32.0, 32.0));
@@ -122,6 +147,14 @@ func _process(delta):
 	# CL 3
 	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("CL_4_Tex", $SubViewport_CL_4.get_texture());
 	
+	# CL 2
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("CL_3_Tex", $SubViewport_CL_3.get_texture());
+	
+	# CL 1 
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("CL_2_Tex", $SubViewport_CL_2.get_texture());
+	
+	# CL 0
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("CL_1_Tex", $SubViewport_CL_1.get_texture());
 	
 	if Input.is_action_just_released("click"):
 		bool_mouseClickIsReleased = false
@@ -158,6 +191,12 @@ func _process(delta):
 	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
 	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
 	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("cascade_level_0_bilinear", $SubViewport_CL_0.get_texture())
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("segmentLocationCoords_tex", sdfSSLocation_tex)
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("segmentColors_tex", sdfSSColor_tex)
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("arrayLargestIndex", currentArrayInex)
+	
 	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		isMousePressed = 1
@@ -236,12 +275,25 @@ func _on_option_button_item_selected(index):
 	elif index == 7: #cascade level 3
 		fullScreenQuadTexture_1 = $SubViewport_CL_3.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	elif index == 8: #cascade level 2
+		fullScreenQuadTexture_1 = $SubViewport_CL_2.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	elif index == 9: #cascade level 1
+		fullScreenQuadTexture_1 = $SubViewport_CL_1.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	elif index == 10: #cascade level 0
+		fullScreenQuadTexture_1 = $SubViewport_CL_0.get_texture()
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	elif index == 11: #Final output, bilinearly interpolated
+		fullScreenQuadTexture_1 = $SubViewport_final_output.get_texture()
+		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 
 
 func _on_h_slider_segment_thickness_value_changed(value):
 	%Label_thickness.text = str(value)
 	segmentThickness = value
 	$SubViewport_5/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
+	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
 
 
 func _on_color_picker_button_color_changed(color):

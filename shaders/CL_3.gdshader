@@ -42,13 +42,13 @@ vec4 read_2D_data_position_from_CL4_Tex(int ix, int iy, ivec2 arraySize2D)
 {
 	float ux = (float(ix) + 0.5) / float(arraySize2D.x);
 	float uy = (float(iy) + 0.5) / float(arraySize2D.y);
-	return texture(CL_4_Tex, vec2(ux, uy));
+	return texture(CL_4_Tex, vec2(ux, 1.0 - uy));
 }
 
 vec3 getUpperCascadeCL4RayColor(vec2 probe, ivec2 cellSamplePoint)
 {
-	int xSamplePos = int(probe.x) * int(u_C3_xy_NO_probes.x);
-	int ySamplePos = int(probe.y) * int(u_C3_xy_NO_probes.y);
+	int xSamplePos = int(probe.x) * (int(u_virtual_resolution.x) / int(u_C4_xy_NO_probes.x));
+	int ySamplePos = int(probe.y) * (int(u_virtual_resolution.x) / int(u_C4_xy_NO_probes.y));
 	
 	xSamplePos = xSamplePos + cellSamplePoint.x;
 	ySamplePos = ySamplePos + cellSamplePoint.y;
@@ -71,8 +71,8 @@ vec3 BilinearInterpolateBetweenCL4Probes(vec2 weightValue, vec3 TL_Probe_Color, 
 vec3 getUpperCascadeColorToMerge(vec2 TL_Probe, float ray_angle_radians, float currentCascadeRaysPerProbe, float upperCascadeRaysPerProbe, vec2 currentProbeXYBilinearWeights)
 {
 	//Find what section of the CL4 texture you need to sample. 
-	float upperCascadeAngleSegment = ((2.0/PI) / upperCascadeRaysPerProbe);
-	float currentCascade_angle_segment = ((2.0/PI) / currentCascadeRaysPerProbe);
+	float upperCascadeAngleSegment = ((2.0*PI) / upperCascadeRaysPerProbe);
+	float currentCascade_angle_segment = ((2.0*PI) / currentCascadeRaysPerProbe);
 	float currentAngle = ray_angle_radians - (currentCascade_angle_segment * 0.5);
 	float NoOfUpperCascadeAngleSegmentsInCurrentAngle = currentAngle / upperCascadeAngleSegment;
 	float angleZoneInUpperCascade = (NoOfUpperCascadeAngleSegmentsInCurrentAngle / 4.0) - 1.0;
@@ -86,6 +86,10 @@ vec3 getUpperCascadeColorToMerge(vec2 TL_Probe, float ray_angle_radians, float c
 		cellSamplePoint_x = int((angleZoneInUpperCascade) * 4.0) % int((sqrt(upperCascadeRaysPerProbe) / 4.0));
 		
 	}
+	
+	// for safety. clamp the cell sample points to ensure they are in the desired range:
+	cellSamplePoint_x = clamp(cellSamplePoint_x, 0, ((int(u_virtual_resolution.x) / int(u_C4_xy_NO_probes.x)) - 1));
+	cellSamplePoint_y = clamp(cellSamplePoint_y, 0, ((int(u_virtual_resolution.y) / int(u_C4_xy_NO_probes.y)) - 1));
 	
 	// Get probes for bilinear interpolation
 	//Probes have been clamped pre function call so don't worry about calling outside of bounds (e.g. probe 33)
@@ -292,6 +296,7 @@ void fragment()
 		//Store the color data in the C3 texture
 		vec4 v_color = read_data_color(hit_index);
 		COLOR = vec4(v_color.r, v_color.g, v_color.b, 1.0);
+		//COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	}
 	else //merge with the higher cascade color
 	{

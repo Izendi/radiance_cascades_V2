@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bdnu8fnyer222"]
+[gd_scene load_steps=42 format=3 uid="uid://bdnu8fnyer222"]
 
 [ext_resource type="Script" uid="uid://7pclqypncw2c" path="res://scenes/node_main_script.gd" id="1_ta4a1"]
 [ext_resource type="Shader" uid="uid://t84ols7oncvw" path="res://shaders/display_1_shader.gdshader" id="2_lbbxc"]
@@ -10,10 +10,11 @@
 [ext_resource type="Shader" uid="uid://dc3lncj52arvj" path="res://shaders/draw_segment_sdf.gdshader" id="7_748q6"]
 [ext_resource type="Shader" uid="uid://buirkvg4ggf1h" path="res://shaders/pingPong/mouse_pingPong_shader.gdshader" id="8_47mj3"]
 [ext_resource type="Shader" uid="uid://b13oamec1cs21" path="res://shaders/CL_3.gdshader" id="8_ig1kv"]
-[ext_resource type="Shader" uid="uid://sbteooe0ibu8" path="res://scenes/CL_0.gdshader" id="8_jowvq"]
+[ext_resource type="Shader" uid="uid://sbteooe0ibu8" path="res://shaders/CL_0.gdshader" id="8_jowvq"]
 [ext_resource type="Shader" uid="uid://f6t84vx034o3" path="res://shaders/CL_1.gdshader" id="9_dsgrs"]
 [ext_resource type="Shader" uid="uid://612ra5xiiqjv" path="res://shaders/CL_4.gdshader" id="9_ig1kv"]
 [ext_resource type="Shader" uid="uid://c7wxg7cryexjf" path="res://shaders/CL_2.gdshader" id="10_453n1"]
+[ext_resource type="Shader" uid="uid://bcu50qpsvcg4o" path="res://shaders/FinalCascadeOutput.gdshader" id="13_dsgrs"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u0iwh"]
 shader = ExtResource("2_lbbxc")
@@ -72,12 +73,75 @@ size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ussq4"]
 shader = ExtResource("8_jowvq")
+shader_parameter/u_C4_probe_offset = Vector2(16, 16)
+shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
+shader_parameter/u_C3_probe_offset = Vector2(8, 8)
+shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
+shader_parameter/u_C2_probe_offset = Vector2(4, 4)
+shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
+shader_parameter/u_C1_probe_offset = Vector2(2, 2)
+shader_parameter/u_C1_xy_NO_probes = Vector2(256, 256)
+shader_parameter/u_C0_probe_offset = Vector2(0, 0)
+shader_parameter/u_C0_xy_NO_probes = Vector2(512, 512)
+shader_parameter/u_C0_no_rays_per_probe = 4.0
+shader_parameter/u_C1_no_rays_per_probe = 16.0
+shader_parameter/u_C2_no_rays_per_probe = 64.0
+shader_parameter/u_C3_no_rays_per_probe = 256.0
+shader_parameter/u_C4_no_rays_per_probe = 1024.0
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/u_virtual_resolution = Vector2(1024, 1024)
+
+[sub_resource type="QuadMesh" id="QuadMesh_453n1"]
+size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hu82w"]
 shader = ExtResource("9_dsgrs")
+shader_parameter/u_C4_probe_offset = Vector2(16, 16)
+shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
+shader_parameter/u_C3_probe_offset = Vector2(8, 8)
+shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
+shader_parameter/u_C2_probe_offset = Vector2(4, 4)
+shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
+shader_parameter/u_C1_probe_offset = Vector2(2, 2)
+shader_parameter/u_C1_xy_NO_probes = Vector2(256, 256)
+shader_parameter/u_C1_no_rays_per_probe = 16.0
+shader_parameter/u_C2_no_rays_per_probe = 64.0
+shader_parameter/u_C3_no_rays_per_probe = 256.0
+shader_parameter/u_C4_no_rays_per_probe = 1024.0
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/u_virtual_resolution = Vector2(1024, 1024)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ussq4"]
+size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n3okx"]
 shader = ExtResource("10_453n1")
+shader_parameter/u_C4_probe_offset = Vector2(16, 16)
+shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
+shader_parameter/u_C3_probe_offset = Vector2(8, 8)
+shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
+shader_parameter/u_C2_probe_offset = Vector2(4, 4)
+shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
+shader_parameter/u_C2_no_rays_per_probe = 64.0
+shader_parameter/u_C3_no_rays_per_probe = 256.0
+shader_parameter/u_C4_no_rays_per_probe = 1024.0
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/u_virtual_resolution = Vector2(1024, 1024)
 
 [sub_resource type="QuadMesh" id="QuadMesh_cy3or"]
 size = Vector2(1024, 1024)
@@ -116,6 +180,19 @@ shader_parameter/u_C4_no_rays_per_probe = 1024.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_gn17g"]
 size = Vector2(1024, 1024)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_453n1"]
+shader = ExtResource("13_dsgrs")
+shader_parameter/arrayLargestIndex = 0
+shader_parameter/currentClickPosition = Vector2(0, 0)
+shader_parameter/currentMousePosition = Vector2(0, 0)
+shader_parameter/isMouseHeld = 0
+shader_parameter/segmentThickness = 0.0
+shader_parameter/currentSelectedColor = Vector4(0, 0, 0, 0)
+shader_parameter/virtual_resolution = Vector2(512, 512)
+
+[sub_resource type="QuadMesh" id="QuadMesh_hu82w"]
+size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_47mj3"]
 shader = ExtResource("7_1y5ni")
@@ -190,9 +267,11 @@ position = Vector2(256, 256)
 mesh = SubResource("QuadMesh_ig1kv")
 
 [node name="SubViewport_CL_0" type="SubViewport" parent="."]
+size = Vector2i(1024, 1024)
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_CL_0"]
 material = SubResource("ShaderMaterial_ussq4")
+mesh = SubResource("QuadMesh_453n1")
 
 [node name="Camera2D" type="Camera2D" parent="SubViewport_CL_0"]
 
@@ -201,6 +280,7 @@ size = Vector2i(1024, 1024)
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_CL_1"]
 material = SubResource("ShaderMaterial_hu82w")
+mesh = SubResource("QuadMesh_ussq4")
 
 [node name="Camera2D" type="Camera2D" parent="SubViewport_CL_1"]
 
@@ -232,6 +312,14 @@ mesh = SubResource("QuadMesh_gn17g")
 
 [node name="Camera2D" type="Camera2D" parent="SubViewport_CL_4"]
 
+[node name="SubViewport_final_output" type="SubViewport" parent="."]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_final_output"]
+material = SubResource("ShaderMaterial_453n1")
+mesh = SubResource("QuadMesh_hu82w")
+
+[node name="Camera2D" type="Camera2D" parent="SubViewport_final_output"]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
@@ -250,7 +338,7 @@ layout_mode = 0
 offset_right = 160.0
 offset_bottom = 32.0
 selected = 5
-item_count = 8
+item_count = 12
 popup/item_0/text = "Test Shader"
 popup/item_0/id = 0
 popup/item_1/text = "Circle RT"
@@ -267,6 +355,14 @@ popup/item_6/text = "Cascade Lvl 4 (top)"
 popup/item_6/id = 6
 popup/item_7/text = "Cascade Lvl 3"
 popup/item_7/id = 7
+popup/item_8/text = "Cascade Lvl 2"
+popup/item_8/id = 8
+popup/item_9/text = "Cascade Lvl 1"
+popup/item_9/id = 9
+popup/item_10/text = "Cascade Lvl 0"
+popup/item_10/id = 10
+popup/item_11/text = "Final RC output"
+popup/item_11/id = 11
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/Control"]
 layout_mode = 0
