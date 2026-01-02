@@ -73,21 +73,13 @@ size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ussq4"]
 shader = ExtResource("8_jowvq")
-shader_parameter/u_C4_probe_offset = Vector2(16, 16)
-shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
-shader_parameter/u_C3_probe_offset = Vector2(8, 8)
-shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
-shader_parameter/u_C2_probe_offset = Vector2(4, 4)
-shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
 shader_parameter/u_C1_probe_offset = Vector2(2, 2)
 shader_parameter/u_C1_xy_NO_probes = Vector2(256, 256)
+shader_parameter/u_c1_xy_NO_rays = Vector2(4, 4)
 shader_parameter/u_C0_probe_offset = Vector2(0, 0)
 shader_parameter/u_C0_xy_NO_probes = Vector2(512, 512)
 shader_parameter/u_C0_no_rays_per_probe = 4.0
 shader_parameter/u_C1_no_rays_per_probe = 16.0
-shader_parameter/u_C2_no_rays_per_probe = 64.0
-shader_parameter/u_C3_no_rays_per_probe = 256.0
-shader_parameter/u_C4_no_rays_per_probe = 1024.0
 shader_parameter/arrayLargestIndex = 0
 shader_parameter/currentClickPosition = Vector2(0, 0)
 shader_parameter/currentMousePosition = Vector2(0, 0)
@@ -101,18 +93,13 @@ size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hu82w"]
 shader = ExtResource("9_dsgrs")
-shader_parameter/u_C4_probe_offset = Vector2(16, 16)
-shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
-shader_parameter/u_C3_probe_offset = Vector2(8, 8)
-shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
 shader_parameter/u_C2_probe_offset = Vector2(4, 4)
 shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
+shader_parameter/u_c2_xy_NO_rays = Vector2(8, 8)
 shader_parameter/u_C1_probe_offset = Vector2(2, 2)
 shader_parameter/u_C1_xy_NO_probes = Vector2(256, 256)
 shader_parameter/u_C1_no_rays_per_probe = 16.0
 shader_parameter/u_C2_no_rays_per_probe = 64.0
-shader_parameter/u_C3_no_rays_per_probe = 256.0
-shader_parameter/u_C4_no_rays_per_probe = 1024.0
 shader_parameter/arrayLargestIndex = 0
 shader_parameter/currentClickPosition = Vector2(0, 0)
 shader_parameter/currentMousePosition = Vector2(0, 0)
@@ -126,15 +113,13 @@ size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n3okx"]
 shader = ExtResource("10_453n1")
-shader_parameter/u_C4_probe_offset = Vector2(16, 16)
-shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
 shader_parameter/u_C3_probe_offset = Vector2(8, 8)
 shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
+shader_parameter/u_c3_xy_NO_rays = Vector2(16, 16)
 shader_parameter/u_C2_probe_offset = Vector2(4, 4)
 shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
 shader_parameter/u_C2_no_rays_per_probe = 64.0
 shader_parameter/u_C3_no_rays_per_probe = 256.0
-shader_parameter/u_C4_no_rays_per_probe = 1024.0
 shader_parameter/arrayLargestIndex = 0
 shader_parameter/currentClickPosition = Vector2(0, 0)
 shader_parameter/currentMousePosition = Vector2(0, 0)

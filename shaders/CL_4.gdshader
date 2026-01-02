@@ -108,6 +108,7 @@ void fragment()
 	
 	// 2. Find ray direction from the probe
 	vec2 local_grid_pos = mod(texel_position, spacing_between_probes);
+	float ray_angle_radians_nof = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C4_no_rays_per_probe);
 	float ray_angle_radians = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C4_no_rays_per_probe) + ((2.0 * PI) / (u_C4_no_rays_per_probe * 2.0));
 	
 	vec2 ray_dir_normalized = vec2(1.0, 0.0);
@@ -195,6 +196,9 @@ void fragment()
 	{
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0); //black default
 	}
+	
+
+	
 }
 
 //void light() {

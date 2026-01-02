@@ -4,32 +4,26 @@ uniform sampler2D CL_2_Tex: filter_nearest, repeat_disable;
 
 const float C0_RAY_INTERVAL = 2.0;
 const float CASCADE_LEVEL = 1.0;
-const float UPPER_CASCADE_LEVEL = 2.0;
+const float UPPER_CASCADE_LEVEL = 1.0;
 const ivec2 CASCADE_TEXTURE_SIZE_XY = ivec2(1024, 1024); // 1024 by 1024
 
 const int MAX_NO_RAY_MARCH_STEPS = 64;
 
-const float C4_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 3.0)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
-const float C3_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 2.0)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
-const float C2_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 1.0)))) / (1.0 - 4.0);
-const float C1_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);
+const float C2_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 1.0)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
+const float C1_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
 const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we do 4 ^ Cascade level == 4 ^ 4 since we are on cascade level 4
 
 const float RAY_MARCH_HIT_THRESHOLD = 0.6;
 
-uniform vec2 u_C4_probe_offset = vec2(16.0, 16.0);
-uniform vec2 u_C4_xy_NO_probes = vec2(32.0, 32.0);
-uniform vec2 u_C3_probe_offset = vec2(8.0, 8.0);
-uniform vec2 u_C3_xy_NO_probes = vec2(64.0, 64.0);
+// ()()()()()()()()()()()()()()()()()()()()()()
+
 uniform vec2 u_C2_probe_offset = vec2(4.0, 4.0);
 uniform vec2 u_C2_xy_NO_probes = vec2(128.0, 128.0);
+uniform vec2 u_c2_xy_NO_rays = vec2(8.0, 8.0);
 uniform vec2 u_C1_probe_offset = vec2(2.0, 2.0);
 uniform vec2 u_C1_xy_NO_probes = vec2(256.0, 256.0);
-
 uniform float u_C1_no_rays_per_probe = 16.0;
-uniform float u_C2_no_rays_per_probe = 64.0;
-uniform float u_C3_no_rays_per_probe = 256.0;
-uniform float u_C4_no_rays_per_probe = 1024.0;
+uniform float u_C2_no_rays_per_probe = 64; //u_c2_xy_NO_rays.x * u_c2_xy_NO_rays.y;
 
 uniform sampler2D segmentLocationCoords_tex: filter_nearest, repeat_disable;
 uniform sampler2D segmentColors_tex: filter_nearest, repeat_disable;
@@ -54,20 +48,28 @@ vec4 read_2D_data_position_from_CL2_Tex(int ix, int iy, ivec2 arraySize2D)
 	return texture(CL_2_Tex, vec2(ux, 1.0 - uy));
 }
 
-vec3 getUpperCascadeCL2RayColor(vec2 probe, ivec2 cellSamplePoint)
+vec3 getCascadeCL2RayColor(vec2 probe, int rayIndex, vec2 spacing_between_probes)
 {
-	int xSamplePos = int(probe.x) * (int(u_virtual_resolution.x) / int(u_C2_xy_NO_probes.x));
-	int ySamplePos = int(probe.y) * (int(u_virtual_resolution.x) / int(u_C2_xy_NO_probes.y));
+	//find how far you need to index in to get to the probe cell
+	int x_probe_index = int(probe.x) * int(spacing_between_probes.x);
+	int y_probe_index = int(probe.y) * int(spacing_between_probes.y);
 	
-	xSamplePos = xSamplePos + cellSamplePoint.x;
-	ySamplePos = ySamplePos + cellSamplePoint.y;
+	//First we find how many times 16 goes into the ray index to find the y value
+	int y_cell_index = rayIndex / int(u_c2_xy_NO_rays.y);
 	
-	vec4 rayColor = read_2D_data_position_from_CL2_Tex(xSamplePos, ySamplePos, CASCADE_TEXTURE_SIZE_XY);
+	//Then subtract y_cell_index * 16 from the rayIndex to find the x value
+	int x_cell_index = rayIndex - (y_cell_index * int(u_c2_xy_NO_rays.x));
+	
+	// Combine the two to get the final texture index to sample from:
+	x_cell_index = x_cell_index + x_probe_index;
+	y_cell_index = y_cell_index + y_probe_index;
+	
+	vec4 rayColor = read_2D_data_position_from_CL2_Tex(x_cell_index, y_cell_index, CASCADE_TEXTURE_SIZE_XY);
 	
 	return vec3(rayColor.x, rayColor.y, rayColor.z);
 }
 
-vec3 BilinearInterpolateBetweenCL2Probes(vec2 weightValue, vec3 TL_Probe_Color, vec3 TR_Probe_Color, vec3 BL_Probe_Color, vec3 BR_Probe_Color)
+vec3 BilinearInterpolateBetweenCL3Probes(vec2 weightValue, vec3 TL_Probe_Color, vec3 TR_Probe_Color, vec3 BL_Probe_Color, vec3 BR_Probe_Color)
 {
 	// Interpolate horizontally
 	vec3 top = mix(TL_Probe_Color, TR_Probe_Color, weightValue.x);
@@ -77,28 +79,22 @@ vec3 BilinearInterpolateBetweenCL2Probes(vec2 weightValue, vec3 TL_Probe_Color, 
 	return mix(top, bottom, weightValue.y);
 }
 
-vec3 getUpperCascadeColorToMerge(vec2 TL_Probe, float ray_angle_radians, float currentCascadeRaysPerProbe, float upperCascadeRaysPerProbe, vec2 currentProbeXYBilinearWeights)
+vec3 getUpperCascadeColorToMerge(
+	vec2 TL_Probe, 
+	vec2 spacing_between_probes,
+	float ray_angle_radians_nof, 
+	float currentCascadeRaysPerProbe, 
+	float upperCascadeRaysPerProbe, 
+	vec2 currentProbeXYBilinearWeights)
 {
-	//Find what section of the CL2 texture you need to sample. 
-	float upperCascadeAngleSegment = ((2.0*PI) / upperCascadeRaysPerProbe);
-	float currentCascade_angle_segment = ((2.0*PI) / currentCascadeRaysPerProbe);
-	float currentAngle = ray_angle_radians - (currentCascade_angle_segment * 0.5);
-	float NoOfUpperCascadeAngleSegmentsInCurrentAngle = currentAngle / upperCascadeAngleSegment;
-	float angleZoneInUpperCascade = (NoOfUpperCascadeAngleSegmentsInCurrentAngle / 4.0) - 1.0;
+	// Use the current ray angle to find the upper cascade equivalent ray index
+	float CL2_raySeg = (2.0 * PI) / u_C2_no_rays_per_probe;
+	float CL2_coresponding_ray_index = ray_angle_radians_nof / CL2_raySeg;
 	
-	float cellSamplePoint_y_float = angleZoneInUpperCascade / (sqrt(upperCascadeRaysPerProbe) / 4.0);
-	int cellSamplePoint_y = int(cellSamplePoint_y_float);
-	int cellSamplePoint_x = 0;
+	int base_ray_index = int(floor(CL2_coresponding_ray_index));
+	base_ray_index = clamp(base_ray_index, 0, int(u_C2_no_rays_per_probe) - 4);
 	
-	if(int(angleZoneInUpperCascade) != 0)
-	{
-		cellSamplePoint_x = int((angleZoneInUpperCascade) * 4.0) % int((sqrt(upperCascadeRaysPerProbe) / 4.0));
-		
-	}
-	
-	// for safety. clamp the cell sample points to ensure they are in the desired range:
-	cellSamplePoint_x = clamp(cellSamplePoint_x, 0, ((int(u_virtual_resolution.x) / int(u_C2_xy_NO_probes.x)) - 4)); // - 4 because we do "cellSamplePoint_x + 3" later and if we are on 7 somehow and each cell is only 8 long, we will bleed into the neighbor cell
-	cellSamplePoint_y = clamp(cellSamplePoint_y, 0, ((int(u_virtual_resolution.y) / int(u_C2_xy_NO_probes.y)) - 1));
+	// *****************************************************
 	
 	// Get probes for bilinear interpolation
 	//Probes have been clamped pre function call so don't worry about calling outside of bounds (e.g. probe 33)
@@ -109,39 +105,39 @@ vec3 getUpperCascadeColorToMerge(vec2 TL_Probe, float ray_angle_radians, float c
 	// Get 4 rays corresponding to this ray and average the values together for each probe
 	
 	// TL Probe 4 relevant rays average color:
-	vec3 TL_Probe_Color = getUpperCascadeCL2RayColor(TL_Probe, ivec2(cellSamplePoint_x, cellSamplePoint_y));
-	TL_Probe_Color = TL_Probe_Color + getUpperCascadeCL2RayColor(TL_Probe, ivec2(cellSamplePoint_x + 1, cellSamplePoint_y));
-	TL_Probe_Color = TL_Probe_Color + getUpperCascadeCL2RayColor(TL_Probe, ivec2(cellSamplePoint_x + 2, cellSamplePoint_y));
-	TL_Probe_Color = TL_Probe_Color + getUpperCascadeCL2RayColor(TL_Probe, ivec2(cellSamplePoint_x + 3, cellSamplePoint_y));
+	vec3 TL_Probe_Color = getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
 	
 	// Divide by 4 to average the color values
 	TL_Probe_Color = TL_Probe_Color / 4.0;
 	
 	// TR Probe 4 relevant rays average color:
-	vec3 TR_Probe_Color = getUpperCascadeCL2RayColor(TR_Probe, ivec2(cellSamplePoint_x, cellSamplePoint_y));
-	TR_Probe_Color = TR_Probe_Color + getUpperCascadeCL2RayColor(TR_Probe, ivec2(cellSamplePoint_x + 1, cellSamplePoint_y));
-	TR_Probe_Color = TR_Probe_Color + getUpperCascadeCL2RayColor(TR_Probe, ivec2(cellSamplePoint_x + 2, cellSamplePoint_y));
-	TR_Probe_Color = TR_Probe_Color + getUpperCascadeCL2RayColor(TR_Probe, ivec2(cellSamplePoint_x + 3, cellSamplePoint_y));
+	vec3 TR_Probe_Color = getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
 	
 	TR_Probe_Color = TR_Probe_Color / 4.0;
 	
 	// BL Probe 4 relevant rays average color:
-	vec3 BL_Probe_Color = getUpperCascadeCL2RayColor(BL_Probe, ivec2(cellSamplePoint_x, cellSamplePoint_y));
-	BL_Probe_Color = BL_Probe_Color + getUpperCascadeCL2RayColor(BL_Probe, ivec2(cellSamplePoint_x + 1, cellSamplePoint_y));
-	BL_Probe_Color = BL_Probe_Color + getUpperCascadeCL2RayColor(BL_Probe, ivec2(cellSamplePoint_x + 2, cellSamplePoint_y));
-	BL_Probe_Color = BL_Probe_Color + getUpperCascadeCL2RayColor(BL_Probe, ivec2(cellSamplePoint_x + 3, cellSamplePoint_y));
+	vec3 BL_Probe_Color = getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
 	
 	BL_Probe_Color = BL_Probe_Color / 4.0;
 	
 	// BR Probe 4 relevant rays average color:
-	vec3 BR_Probe_Color = getUpperCascadeCL2RayColor(BR_Probe, ivec2(cellSamplePoint_x, cellSamplePoint_y));
-	BR_Probe_Color = BR_Probe_Color + getUpperCascadeCL2RayColor(BR_Probe, ivec2(cellSamplePoint_x + 1, cellSamplePoint_y));
-	BR_Probe_Color = BR_Probe_Color + getUpperCascadeCL2RayColor(BR_Probe, ivec2(cellSamplePoint_x + 2, cellSamplePoint_y));
-	BR_Probe_Color = BR_Probe_Color + getUpperCascadeCL2RayColor(BR_Probe, ivec2(cellSamplePoint_x + 3, cellSamplePoint_y));
+	vec3 BR_Probe_Color = getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
 	
 	BR_Probe_Color = BR_Probe_Color / 4.0;
 	
-	vec3 FinalColor = BilinearInterpolateBetweenCL2Probes(currentProbeXYBilinearWeights, TL_Probe_Color, TR_Probe_Color, BL_Probe_Color, BR_Probe_Color);
+	vec3 FinalColor = BilinearInterpolateBetweenCL3Probes(currentProbeXYBilinearWeights, TL_Probe_Color, TR_Probe_Color, BL_Probe_Color, BR_Probe_Color);
 	
 	return FinalColor;
 }
@@ -223,7 +219,9 @@ void fragment()
 	
 	// 2. Find ray direction from the probe
 	vec2 local_grid_pos = mod(texel_position, spacing_between_probes);
-	float ray_angle_radians = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C1_no_rays_per_probe) + ((2.0 * PI) / (u_C1_no_rays_per_probe * 2.0));
+	float ray_angle_radians_nof = local_grid_pos.y * ((2.0 * PI) / spacing_between_probes.x) + local_grid_pos.x * ((2.0 * PI) / u_C1_no_rays_per_probe);
+	float ray_angle_radians = ray_angle_radians_nof + ((2.0 * PI) / (u_C1_no_rays_per_probe * 2.0));
+	
 	
 	vec2 ray_dir_normalized = vec2(1.0, 0.0);
 	ray_dir_normalized = rotate_anticlockwise(ray_dir_normalized, ray_angle_radians);
@@ -314,7 +312,7 @@ void fragment()
 		
 		// This assumed x and y are the same
 		float C2probeSpaceing = u_virtual_resolution.x / u_C2_xy_NO_probes.x; 
-		float max_center = u_C2_probe_offset.x + float(u_C2_xy_NO_probes.x - 1.0) * C2probeSpaceing; 
+		float max_center = u_C2_probe_offset.x + float(u_C2_xy_NO_probes.x - 1.0) * C2probeSpaceing; // max_center = 1008 probably assuming default settings
 		
 		vec2 point_clamped = clamp(current_probe_pos, u_C2_probe_offset, vec2(max_center, max_center));
 		
@@ -328,23 +326,11 @@ void fragment()
 		// we can use the positionalValue to find the weight that will be used for bilinear interpolation.
 		vec2 current_probe_x_y_bilinear_weights = positionalValue - vec2(TL_Probe); // this is pretty much like doing fract to get everything after the dot of positionalValue
 		
-		vec3 FinalColor = getUpperCascadeColorToMerge(TL_Probe, ray_angle_radians, u_C1_no_rays_per_probe, u_C2_no_rays_per_probe, current_probe_x_y_bilinear_weights);
+		vec3 FinalColor = getUpperCascadeColorToMerge(TL_Probe, vec2(C2probeSpaceing), ray_angle_radians_nof, u_C1_no_rays_per_probe, u_C2_no_rays_per_probe, current_probe_x_y_bilinear_weights);
 		
 		COLOR = vec4(FinalColor.x, FinalColor.y, FinalColor.z, 1.0); //black default
-		//COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	}
+	
+	
 }
-
-
-//
-//void fragment() 
-//{
-	//// SubViewport textures are GPU render targets. GPU APIs (OpenGL / Vulkan) define:
-	//// therefore:   Texture origin = bottom-left.
-	////
-	//// So we need to flip the UV's y value to sample correctly.
-	//vec2 corrected_uv = vec2(UV.x, 1.0 - UV.y);
-	//COLOR = texture(CL_4_Tex, corrected_uv);
-	////COLOR = vec4(0.5, 0.5, 0.0, 1.0);
-//}
 
