@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var fullScreenQuadTexture_1: Texture = $SubViewport_5.get_texture()
+@onready var fullScreenQuadTexture_1: Texture = $SubViewport_final_output.get_texture()
 #@onready var bool_displayShaderUpdated: bool = false
 
 @onready var mouseTex_A: Texture2D
@@ -49,8 +49,6 @@ func addValueToTextureArray(arrayIndex: int, startLocation: Vector2, endLocation
 	sdfSSLocation_tex.set_image(sdfSSLocation)
 	sdfSSColor_tex.set_image(sdfSSColor)
 	
-	
-	
 
 func _ready():
 	
@@ -73,19 +71,12 @@ func _ready():
 	sdfSSLocation_tex = ImageTexture.create_from_image(sdfSSLocation)
 	sdfSSColor_tex = ImageTexture.create_from_image(sdfSSColor)
 	
-	$PingPongRoot/SubViewport_A/MeshInstance2D_A.material.set_shader_parameter("input_tex", mouseTex_A)
-	$PingPongRoot/SubViewport_B/MeshInstance2D_B.material.set_shader_parameter("input_tex", mouseTex_B)
-	
 
 func _physics_process(delta):
 	pass
 	
 
 func _process(delta):
-	
-	var vp = $PingPongRoot/SubViewport_A
-	$PingPongRoot/SubViewport_A/MeshInstance2D_A.material.set_shader_parameter("viewport_size", vp.size)
-	$PingPongRoot/SubViewport_B/MeshInstance2D_B.material.set_shader_parameter("viewport_size", vp.size)
 	
 	var isMousePressed: int = 0
 	
@@ -203,32 +194,6 @@ func _process(delta):
 	else:
 		isMousePressed = 0
 	
-	if ping_is_A:
-		# PASS 1 for mouse tex:
-		$PingPongRoot/SubViewport_A/MeshInstance2D_A.material.set_shader_parameter("mousePos", get_viewport().get_mouse_position())
-		$PingPongRoot/SubViewport_A/MeshInstance2D_A.material.set_shader_parameter("mouseClick", isMousePressed)
-		$PingPongRoot/SubViewport_A/MeshInstance2D_A.material.set_shader_parameter("input_tex", mouseTex_A)
-		$PingPongRoot/SubViewport_A.render_target_update_mode = SubViewport.UPDATE_ONCE
-		
-		await get_tree().process_frame
-		
-		mouseTex_B = $PingPongRoot/SubViewport_A.get_texture()
-		
-		ping_is_A = false
-	else:
-		
-		# PASS 2 for mouse tex:
-		$PingPongRoot/SubViewport_B/MeshInstance2D_B.material.set_shader_parameter("mousePos", get_viewport().get_mouse_position())
-		$PingPongRoot/SubViewport_B/MeshInstance2D_B.material.set_shader_parameter("mouseClick", isMousePressed)
-		$PingPongRoot/SubViewport_B/MeshInstance2D_B.material.set_shader_parameter("input_tex", mouseTex_B)
-		$PingPongRoot/SubViewport_B.render_target_update_mode = SubViewport.UPDATE_ONCE
-	
-		await get_tree().process_frame
-	
-		mouseTex_A = $PingPongRoot/SubViewport_B.get_texture()
-		
-		ping_is_A = true
-	
 	#time_passed = time_passed + float(delta)
 	
 	#$SubViewport_2/MeshInstance2D.material.set_shader_parameter("total_elapsed_time", time_passed)
@@ -257,34 +222,28 @@ func _on_option_button_item_selected(index):
 	elif index == 1: #circle RT
 		fullScreenQuadTexture_1 = $SubViewport_2.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
-	elif index == 2: #Grid Display
-		fullScreenQuadTexture_1 = $SubViewport_seg_no_cent.get_texture()
-		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 3: #SDF
+	elif index == 2: #SDF
 		fullScreenQuadTexture_1 = $SubViewport_4.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
-	elif index == 4: #Drawing with SDFs
-		fullScreenQuadTexture_1 = $PingPongRoot/SubViewport_A.get_texture()
-		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
-	elif index == 5: #Drawing Segments
+	elif index == 3: #Drawing Segments
 		fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
-	elif index == 6: #cascade level 4
+	elif index == 4: #cascade level 4
 		fullScreenQuadTexture_1 = $SubViewport_CL_4.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 7: #cascade level 3
+	elif index == 5: #cascade level 3
 		fullScreenQuadTexture_1 = $SubViewport_CL_3.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 8: #cascade level 2
+	elif index == 6: #cascade level 2
 		fullScreenQuadTexture_1 = $SubViewport_CL_2.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 9: #cascade level 1
+	elif index == 7: #cascade level 1
 		fullScreenQuadTexture_1 = $SubViewport_CL_1.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 10: #cascade level 0
+	elif index == 8: #cascade level 0
 		fullScreenQuadTexture_1 = $SubViewport_CL_0.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
-	elif index == 11: #Final output, bilinearly interpolated
+	elif index == 9: #Final output, bilinearly interpolated
 		fullScreenQuadTexture_1 = $SubViewport_final_output.get_texture()
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 
@@ -298,3 +257,7 @@ func _on_h_slider_segment_thickness_value_changed(value):
 
 func _on_color_picker_button_color_changed(color):
 	currentSelectedColor = Vector4(color.r, color.g, color.b, segmentThickness)
+
+
+func _on_clear_button_pressed():
+	currentArrayInex = 0;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://bdnu8fnyer222"]
+[gd_scene load_steps=40 format=3 uid="uid://bdnu8fnyer222"]
 
 [ext_resource type="Script" uid="uid://7pclqypncw2c" path="res://scenes/node_main_script.gd" id="1_ta4a1"]
 [ext_resource type="Shader" uid="uid://t84ols7oncvw" path="res://shaders/display_1_shader.gdshader" id="2_lbbxc"]
@@ -8,7 +8,6 @@
 [ext_resource type="Shader" uid="uid://dwepgphsroufn" path="res://shaders/sdf_test_shader.gdshader" id="6_07a3n"]
 [ext_resource type="Shader" uid="uid://ditx2cnytp3be" path="res://shaders/draw_With_SDF_shader.gdshader" id="7_1y5ni"]
 [ext_resource type="Shader" uid="uid://dc3lncj52arvj" path="res://shaders/draw_segment_sdf.gdshader" id="7_748q6"]
-[ext_resource type="Shader" uid="uid://buirkvg4ggf1h" path="res://shaders/pingPong/mouse_pingPong_shader.gdshader" id="8_47mj3"]
 [ext_resource type="Shader" uid="uid://b13oamec1cs21" path="res://shaders/CL_3.gdshader" id="8_ig1kv"]
 [ext_resource type="Shader" uid="uid://sbteooe0ibu8" path="res://shaders/CL_0.gdshader" id="8_jowvq"]
 [ext_resource type="Shader" uid="uid://f6t84vx034o3" path="res://shaders/CL_1.gdshader" id="9_dsgrs"]
@@ -183,12 +182,6 @@ size = Vector2(512, 512)
 shader = ExtResource("7_1y5ni")
 shader_parameter/virtual_resolution = Vector2(512, 512)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_748q6"]
-shader = ExtResource("8_47mj3")
-shader_parameter/mousePos = Vector2(0, 0)
-shader_parameter/mouseClick = 0
-shader_parameter/viewport_size = Vector2(0, 0)
-
 [node name="Node2D_main" type="Node2D"]
 script = ExtResource("1_ta4a1")
 
@@ -311,57 +304,53 @@ mesh = SubResource("QuadMesh_hu82w")
 layout_mode = 3
 anchor_left = 0.020000001
 anchor_top = 0.020000001
-anchor_right = 0.38300002
+anchor_right = 0.48400003
 anchor_bottom = 0.44700003
-offset_left = -0.24000072
-offset_top = -0.24000072
-offset_right = -0.0960083
+offset_left = -0.23999977
+offset_top = -0.23999977
+offset_right = 0.38397217
 offset_bottom = 0.13598633
 
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer/Control"]
 layout_mode = 0
 offset_right = 160.0
 offset_bottom = 32.0
-selected = 5
-item_count = 12
+selected = 9
+item_count = 10
 popup/item_0/text = "Test Shader"
 popup/item_0/id = 0
 popup/item_1/text = "Circle RT"
 popup/item_1/id = 1
-popup/item_2/text = "seg no centering"
+popup/item_2/text = "SDF"
 popup/item_2/id = 2
-popup/item_3/text = "SDF"
+popup/item_3/text = "Drawing Segments"
 popup/item_3/id = 3
-popup/item_4/text = "Drawing with SDFs"
+popup/item_4/text = "Cascade Lvl 4 (top)"
 popup/item_4/id = 4
-popup/item_5/text = "Drawing Segments"
+popup/item_5/text = "Cascade Lvl 3"
 popup/item_5/id = 5
-popup/item_6/text = "Cascade Lvl 4 (top)"
+popup/item_6/text = "Cascade Lvl 2"
 popup/item_6/id = 6
-popup/item_7/text = "Cascade Lvl 3"
+popup/item_7/text = "Cascade Lvl 1"
 popup/item_7/id = 7
-popup/item_8/text = "Cascade Lvl 2"
+popup/item_8/text = "Cascade Lvl 0"
 popup/item_8/id = 8
-popup/item_9/text = "Cascade Lvl 1"
+popup/item_9/text = "Final RC output"
 popup/item_9/id = 9
-popup/item_10/text = "Cascade Lvl 0"
-popup/item_10/id = 10
-popup/item_11/text = "Final RC output"
-popup/item_11/id = 11
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 199.0
-offset_top = 2.0
-offset_right = 240.0
-offset_bottom = 36.0
+offset_left = 193.76
+offset_top = 1.7599983
+offset_right = 234.76
+offset_bottom = 35.76
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 268.0
-offset_top = 2.0
-offset_right = 385.0
-offset_bottom = 39.0
+offset_left = 253.76001
+offset_top = 1.7599983
+offset_right = 332.52002
+offset_bottom = 38.76
 min_value = 1.0
 max_value = 20.0
 step = 0.1
@@ -369,10 +358,10 @@ value = 1.0
 
 [node name="Panel2" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 404.0
-offset_top = 4.0
-offset_right = 472.0
-offset_bottom = 39.0
+offset_left = 346.76
+offset_top = 2.7599983
+offset_right = 414.76
+offset_bottom = 37.76
 
 [node name="Label_thickness" type="Label" parent="CanvasLayer/Control/Panel2"]
 unique_name_in_owner = true
@@ -384,6 +373,14 @@ offset_bottom = 30.0
 text = "1.0"
 horizontal_alignment = 1
 
+[node name="Button" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 425.76
+offset_top = 3.7599983
+offset_right = 482.76
+offset_bottom = 36.76
+text = "Clear"
+
 [node name="SubViewport_mouseClicks" type="SubViewport" parent="."]
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_mouseClicks"]
@@ -391,24 +388,7 @@ material = SubResource("ShaderMaterial_47mj3")
 position = Vector2(256, 256)
 mesh = SubResource("QuadMesh_lbbxc")
 
-[node name="PingPongRoot" type="Node2D" parent="."]
-
-[node name="SubViewport_A" type="SubViewport" parent="PingPongRoot"]
-render_target_update_mode = 0
-
-[node name="MeshInstance2D_A" type="MeshInstance2D" parent="PingPongRoot/SubViewport_A"]
-material = SubResource("ShaderMaterial_748q6")
-position = Vector2(256, 256)
-mesh = SubResource("QuadMesh_lbbxc")
-
-[node name="SubViewport_B" type="SubViewport" parent="PingPongRoot"]
-render_target_update_mode = 0
-
-[node name="MeshInstance2D_B" type="MeshInstance2D" parent="PingPongRoot/SubViewport_B"]
-material = SubResource("ShaderMaterial_748q6")
-position = Vector2(256, 256)
-mesh = SubResource("QuadMesh_lbbxc")
-
 [connection signal="item_selected" from="CanvasLayer/Control/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="color_changed" from="CanvasLayer/Control/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
 [connection signal="value_changed" from="CanvasLayer/Control/HSlider" to="." method="_on_h_slider_segment_thickness_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_clear_button_pressed"]

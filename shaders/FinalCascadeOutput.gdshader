@@ -165,7 +165,6 @@ void fragment()
 			finalColor = mix(vec3(v_color.x, v_color.y, v_color.z), finalColor, step(0.0, d_value));
 			break;
 		}
-
 	}
 
 	// ---------------------
@@ -174,18 +173,12 @@ void fragment()
 		vec4 C0_tex_color =  texture(cascade_level_0_bilinear, vec2(UV.x, 1.0 - UV.y));
 		vec3 C0_tex_color_vec3 = vec3(C0_tex_color.x, C0_tex_color.y, C0_tex_color.z);
 
-		finalColor = finalColor + C0_tex_color_vec3;
+		finalColor = finalColor * C0_tex_color_vec3;
 	}
 
-	if(arrayLargestIndex < 1)
-	{
-		COLOR = vec4(gridColor * 0.05, 1.0);
-	}
-	else
-	{
-		//COLOR = vec4(C0_tex_color_vec3, 1.0);
-		COLOR = vec4(finalColor, 1.0);
-	}
+	//COLOR = vec4(C0_tex_color_vec3, 1.0);
+	COLOR = vec4(finalColor, 1.0);
+	
 }
 
 //void light() {

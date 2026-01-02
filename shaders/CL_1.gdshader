@@ -15,7 +15,7 @@ const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we 
 
 const float RAY_MARCH_HIT_THRESHOLD = 0.6;
 
-// ()()()()()()()()()()()()()()()()()()()()()()
+// ()()()()()()()()()()()()()()()()()()()()()()()()()()
 
 uniform vec2 u_C2_probe_offset = vec2(4.0, 4.0);
 uniform vec2 u_C2_xy_NO_probes = vec2(128.0, 128.0);
@@ -105,35 +105,35 @@ vec3 getUpperCascadeColorToMerge(
 	// Get 4 rays corresponding to this ray and average the values together for each probe
 	
 	// TL Probe 4 relevant rays average color:
-	vec3 TL_Probe_Color = getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
-	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
-	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
-	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
+	vec3 TL_Probe_Color = getCascadeCL2RayColor(TL_Probe, base_ray_index, spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, base_ray_index + 1, spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, base_ray_index + 2, spacing_between_probes);
+	TL_Probe_Color = TL_Probe_Color + getCascadeCL2RayColor(TL_Probe, base_ray_index + 3, spacing_between_probes);
 	
 	// Divide by 4 to average the color values
 	TL_Probe_Color = TL_Probe_Color / 4.0;
 	
 	// TR Probe 4 relevant rays average color:
-	vec3 TR_Probe_Color = getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
-	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
-	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
-	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
+	vec3 TR_Probe_Color = getCascadeCL2RayColor(TR_Probe, base_ray_index, spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, base_ray_index + 1, spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, base_ray_index + 2, spacing_between_probes);
+	TR_Probe_Color = TR_Probe_Color + getCascadeCL2RayColor(TR_Probe, base_ray_index + 3, spacing_between_probes);
 	
 	TR_Probe_Color = TR_Probe_Color / 4.0;
 	
 	// BL Probe 4 relevant rays average color:
-	vec3 BL_Probe_Color = getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
-	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
-	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
-	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
+	vec3 BL_Probe_Color = getCascadeCL2RayColor(BL_Probe, base_ray_index, spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, base_ray_index + 1, spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, base_ray_index + 2, spacing_between_probes);
+	BL_Probe_Color = BL_Probe_Color + getCascadeCL2RayColor(BL_Probe, base_ray_index + 3, spacing_between_probes);
 	
 	BL_Probe_Color = BL_Probe_Color / 4.0;
 	
 	// BR Probe 4 relevant rays average color:
-	vec3 BR_Probe_Color = getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index), spacing_between_probes);
-	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 1.0), spacing_between_probes);
-	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 2.0), spacing_between_probes);
-	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, int(CL2_coresponding_ray_index + 3.0), spacing_between_probes);
+	vec3 BR_Probe_Color = getCascadeCL2RayColor(BR_Probe, base_ray_index, spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, base_ray_index + 1, spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, base_ray_index + 2, spacing_between_probes);
+	BR_Probe_Color = BR_Probe_Color + getCascadeCL2RayColor(BR_Probe, base_ray_index + 3, spacing_between_probes);
 	
 	BR_Probe_Color = BR_Probe_Color / 4.0;
 	
@@ -252,7 +252,7 @@ void fragment()
 		
 		for(int i = 0; i < SDF_ARRAY_SIZE; i++)
 		{
-			if(i > arrayLargestIndex)
+			if(i >= arrayLargestIndex)
 			{
 				break;
 			}

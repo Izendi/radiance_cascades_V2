@@ -140,7 +140,7 @@ void fragment()
 		
 		for(int i = 0; i < SDF_ARRAY_SIZE; i++)
 		{
-			if(i > arrayLargestIndex)
+			if(i >= arrayLargestIndex)
 			{
 				break;
 			}

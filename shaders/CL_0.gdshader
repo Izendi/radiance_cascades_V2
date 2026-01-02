@@ -92,8 +92,7 @@ vec3 getUpperCascadeColorToMerge(
 	float CL1_coresponding_ray_index = ray_angle_radians_nof / CL1_raySeg;
 	
 	int base_ray_index = int(floor(CL1_coresponding_ray_index));
-	base_ray_index = clamp(base_ray_index, 0, int(CL1_coresponding_ray_index) - 4);
-	
+	base_ray_index = clamp(base_ray_index, 0, int(u_C1_no_rays_per_probe) - 4);
 	// *****************************************************
 	
 	// Get probes for bilinear interpolation
@@ -202,7 +201,6 @@ void vertex()
 
 void fragment()
 {
-	
 	// SubViewport textures are GPU render targets. GPU APIs (OpenGL / Vulkan) define:
 	// therefore:   Texture origin = bottom-left.
 	//
@@ -252,7 +250,7 @@ void fragment()
 		
 		for(int i = 0; i < SDF_ARRAY_SIZE; i++)
 		{
-			if(i > arrayLargestIndex)
+			if(i >= arrayLargestIndex)
 			{
 				break;
 			}
