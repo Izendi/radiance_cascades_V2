@@ -86,10 +86,13 @@ func _process(delta):
 	if Input.is_action_just_pressed("click"):
 		bool_mouseClickIsHeld = true
 		mousePosition_click = get_viewport().get_mouse_position()
+		mousePosition_click = mousePosition_click * 0.5;
 		print(mousePosition_click)
 	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		mousePositionPlaceholder_release = get_viewport().get_mouse_position()
+		mousePositionPlaceholder_release = mousePositionPlaceholder_release * 0.5;
+		
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
@@ -153,6 +156,7 @@ func _process(delta):
 	if Input.is_action_just_released("click"):
 		bool_mouseClickIsReleased = false
 		mousePosition_release = get_viewport().get_mouse_position()
+		mousePosition_release = mousePosition_release * 0.5
 		bool_needToGenerateNewLineSDFfromInputs = true
 		print(mousePosition_release)
 		print ("\n --- \n")

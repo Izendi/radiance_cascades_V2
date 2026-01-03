@@ -110,13 +110,13 @@ void fragment()
 
 	vec2 resolution = vec2(virtual_resolution.x, virtual_resolution.y);
 	
-	vec2 scaled_UV = vec2(UV.x * 2.0, UV.y * 2.0);
 	
-	vec2 NDC_coord = scaled_UV * 2.0 - 1.0;
+	
+	vec2 NDC_coord = UV * 2.0 - 1.0;
 
 	// centeredPixelCoords is more like: current pixel / fragment position.
-	vec2 centeredPixelCoords = (scaled_UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
-	vec2 TLPixelCoords = scaled_UV * resolution;
+	vec2 centeredPixelCoords = (UV - 0.5) * resolution; // (0, 0) is is the middle but the x and y legth is the resolution. e.g -250 to 250 x and -100 to 100 y
+	vec2 TLPixelCoords = UV * resolution;
 	//centeredPixelCoords.x = -centeredPixelCoords.x;
 	//centeredPixelCoords.y = -centeredPixelCoords.y;
 
