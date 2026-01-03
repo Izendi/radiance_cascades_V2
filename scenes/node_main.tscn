@@ -304,17 +304,19 @@ mesh = SubResource("QuadMesh_hu82w")
 layout_mode = 3
 anchor_left = 0.020000001
 anchor_top = 0.020000001
-anchor_right = 0.48400003
-anchor_bottom = 0.44700003
+anchor_right = 0.46400002
+anchor_bottom = 0.079
 offset_left = -0.23999977
 offset_top = -0.23999977
-offset_right = 0.38397217
-offset_bottom = 0.13598633
+offset_right = -0.13601685
+offset_bottom = 0.10399628
 
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_right = 160.0
-offset_bottom = 32.0
+offset_left = -12.240002
+offset_top = -3.2400017
+offset_right = 164.76
+offset_bottom = 28.759998
 selected = 9
 item_count = 10
 popup/item_0/text = "Test Shader"
@@ -340,17 +342,17 @@ popup/item_9/id = 9
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 193.76
-offset_top = 1.7599983
-offset_right = 234.76
-offset_bottom = 35.76
+offset_left = 172.76
+offset_top = -4.2400017
+offset_right = 213.76
+offset_bottom = 29.759998
 
 [node name="HSlider" type="HSlider" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 253.76001
-offset_top = 1.7599983
-offset_right = 332.52002
-offset_bottom = 38.76
+offset_left = 222.76
+offset_top = -4.2400017
+offset_right = 301.52002
+offset_bottom = 32.76
 min_value = 1.0
 max_value = 20.0
 step = 0.1
@@ -358,10 +360,10 @@ value = 1.0
 
 [node name="Panel2" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 346.76
-offset_top = 2.7599983
-offset_right = 414.76
-offset_bottom = 37.76
+offset_left = 313.76
+offset_top = -5.2400017
+offset_right = 381.76
+offset_bottom = 29.759998
 
 [node name="Label_thickness" type="Label" parent="CanvasLayer/Control/Panel2"]
 unique_name_in_owner = true
@@ -375,10 +377,10 @@ horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_left = 425.76
-offset_top = 3.7599983
-offset_right = 482.76
-offset_bottom = 36.76
+offset_left = 393.76
+offset_top = -2.2400017
+offset_right = 450.76
+offset_bottom = 30.759998
 text = "Clear"
 
 [node name="SubViewport_mouseClicks" type="SubViewport" parent="."]

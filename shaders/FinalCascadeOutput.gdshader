@@ -45,7 +45,7 @@ vec3 BackgroundColor(vec2 uv_coords)
 	//vignette = remap(vignette, 0.0, 1.0, 0.3, 1.0);
 	//return vec3(vignette);
 
-	return vec3(1.0, 1.0, 1.0);
+	return vec3(0.0, 0.0, 0.0);
 }
 
 
@@ -123,10 +123,10 @@ void fragment()
 
 	vec3 finalColor = BackgroundColor(UV);
 
-	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 10.0, 1.00);
-	finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 100.0, 2.00);
+	//finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 10.0, 1.00);
+	//finalColor = DrawGrid(finalColor, UV, resolution, vec3(0.0), 100.0, 2.00);
 
-	vec3 gridColor = finalColor;
+	//vec3 gridColor = finalColor;
 
 	// SDF DRAWING, Draw over the top of everything else, so that the lights appear above the grid
 	// ---------------------
@@ -173,7 +173,7 @@ void fragment()
 		vec4 C0_tex_color =  texture(cascade_level_0_bilinear, vec2(UV.x, 1.0 - UV.y));
 		vec3 C0_tex_color_vec3 = vec3(C0_tex_color.x, C0_tex_color.y, C0_tex_color.z);
 
-		finalColor = finalColor * C0_tex_color_vec3;
+		finalColor = finalColor + C0_tex_color_vec3;
 	}
 
 	//COLOR = vec4(C0_tex_color_vec3, 1.0);
