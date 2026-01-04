@@ -58,6 +58,9 @@ func _ready():
 	$SubViewport_final_output/MeshInstance2D.material.set_shader_parameter("segmentThickness", segmentThickness)
 	%Label_thickness.text = str(segmentThickness)
 	
+	fullScreenQuadTexture_1 = $SubViewport_final_output.get_texture()
+	activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
+	
 	#Create ping pong texture:
 	var texImage := Image.create(512, 512, false, Image.FORMAT_RGBA8)
 	texImage.fill(Color(0.0, 0.0, 0.0, 0.0))
@@ -83,10 +86,13 @@ func _process(delta):
 	if Input.is_action_just_pressed("click"):
 		bool_mouseClickIsHeld = true
 		mousePosition_click = get_viewport().get_mouse_position()
+		mousePosition_click = mousePosition_click * 0.5;
 		print(mousePosition_click)
 	
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
 		mousePositionPlaceholder_release = get_viewport().get_mouse_position()
+		mousePositionPlaceholder_release = mousePositionPlaceholder_release * 0.5;
+		
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentClickPosition", mousePosition_click)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("currentMousePosition", mousePositionPlaceholder_release)
 		$SubViewport_5/MeshInstance2D.material.set_shader_parameter("isMouseHeld", 1)
@@ -150,6 +156,7 @@ func _process(delta):
 	if Input.is_action_just_released("click"):
 		bool_mouseClickIsReleased = false
 		mousePosition_release = get_viewport().get_mouse_position()
+		mousePosition_release = mousePosition_release * 0.5
 		bool_needToGenerateNewLineSDFfromInputs = true
 		print(mousePosition_release)
 		print ("\n --- \n")
@@ -227,7 +234,7 @@ func _on_option_button_item_selected(index):
 		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
 	elif index == 3: #Drawing Segments
 		fullScreenQuadTexture_1 = $SubViewport_5.get_texture()
-		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 	elif index == 4: #cascade level 4
 		fullScreenQuadTexture_1 = $SubViewport_CL_4.get_texture()
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
@@ -245,7 +252,7 @@ func _on_option_button_item_selected(index):
 		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 	elif index == 9: #Final output, bilinearly interpolated
 		fullScreenQuadTexture_1 = $SubViewport_final_output.get_texture()
-		activateRenderQuadWithResolution(512, fullScreenQuadTexture_1)
+		activateRenderQuadWithResolution(1024, fullScreenQuadTexture_1)
 
 
 func _on_h_slider_segment_thickness_value_changed(value):
