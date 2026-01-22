@@ -132,6 +132,8 @@ size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jowvq"]
 shader = ExtResource("8_ig1kv")
+shader_parameter/U_C3_RAY_START_DISTANCE = 171.0
+shader_parameter/U_C3_RAY_INTERVAL_LENGTH = 45.0
 shader_parameter/u_C4_probe_offset = Vector2(16, 16)
 shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
 shader_parameter/u_C3_probe_offset = Vector2(8, 8)
@@ -161,6 +163,8 @@ shader_parameter/u_virtual_resolution = Vector2(1024, 1024)
 shader_parameter/u_C4_probe_offset = Vector2(16, 16)
 shader_parameter/u_C4_xy_NO_probes = Vector2(32, 32)
 shader_parameter/u_C4_no_rays_per_probe = 1024.0
+shader_parameter/U_C4_RAY_START_DISTANCE = 171.0
+shader_parameter/U_C4_RAY_INTERVAL_LENGTH = 512.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_gn17g"]
 size = Vector2(1024, 1024)
@@ -381,6 +385,168 @@ offset_right = 482.76
 offset_bottom = 36.76
 text = "Clear"
 
+[node name="HSlider_CL4_StartDistance" type="HSlider" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 328.76
+offset_top = 56.759995
+offset_right = 415.52002
+offset_bottom = 84.51999
+min_value = 2.0
+max_value = 600.0
+value = 171.0
+
+[node name="Panel_CL4_SD" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 424.76
+offset_top = 63.76
+offset_right = 485.76
+offset_bottom = 92.759995
+
+[node name="Label_CL4_SD" type="Label" parent="CanvasLayer/Control/Panel_CL4_SD"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 11.0
+offset_top = 5.0
+offset_right = 51.0
+offset_bottom = 28.0
+text = "171"
+
+[node name="HSlider_CL4_IntervalLength" type="HSlider" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 333.76
+offset_top = 98.759995
+offset_right = 412.52002
+offset_bottom = 126.51999
+min_value = 2.0
+max_value = 600.0
+value = 512.0
+
+[node name="Panel_CL4_IL" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 424.76
+offset_top = 99.759995
+offset_right = 485.76
+offset_bottom = 128.76
+
+[node name="Label_CL4_IL" type="Label" parent="CanvasLayer/Control/Panel_CL4_IL"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 12.0
+offset_top = 5.0
+offset_right = 52.0
+offset_bottom = 28.0
+text = "512"
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 263.76
+offset_top = 50.76
+offset_right = 314.76
+offset_bottom = 79.759995
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "C4 SD"
+
+[node name="Panel3" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 264.76
+offset_top = 93.759995
+offset_right = 315.76
+offset_bottom = 122.759995
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Panel3"]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 48.0
+offset_bottom = 27.0
+text = "C4 IL"
+
+[node name="HSlider_CL3_StartDistance" type="HSlider" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 329.76
+offset_top = 140.76
+offset_right = 416.52002
+offset_bottom = 168.51999
+min_value = 2.0
+max_value = 600.0
+value = 44.0
+
+[node name="Panel_CL3_SD" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 425.76
+offset_top = 147.76
+offset_right = 486.76
+offset_bottom = 176.76
+
+[node name="Label_CL3_SD" type="Label" parent="CanvasLayer/Control/Panel_CL3_SD"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 11.0
+offset_top = 5.0
+offset_right = 51.0
+offset_bottom = 28.0
+text = "44"
+
+[node name="HSlider_CL3_IntervalLength" type="HSlider" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 335.76
+offset_top = 199.76
+offset_right = 411.52002
+offset_bottom = 225.51999
+min_value = 2.0
+max_value = 600.0
+value = 128.0
+
+[node name="Panel_CL3_IL" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 426.76
+offset_top = 194.76
+offset_right = 487.76
+offset_bottom = 223.76
+
+[node name="Label_CL3_IL" type="Label" parent="CanvasLayer/Control/Panel_CL3_IL"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 48.0
+offset_bottom = 28.0
+text = "128"
+
+[node name="Panel4" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 263.76
+offset_top = 144.76
+offset_right = 314.76
+offset_bottom = 173.76
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Panel4"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 4.0
+offset_right = 49.0
+offset_bottom = 27.0
+text = "C3 SD"
+
+[node name="Panel5" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 264.76
+offset_top = 191.76
+offset_right = 315.76
+offset_bottom = 220.76
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Panel5"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 49.0
+offset_bottom = 28.0
+text = "C3 IL"
+
 [node name="SubViewport_mouseClicks" type="SubViewport" parent="."]
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="SubViewport_mouseClicks"]
@@ -392,3 +558,7 @@ mesh = SubResource("QuadMesh_lbbxc")
 [connection signal="color_changed" from="CanvasLayer/Control/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
 [connection signal="value_changed" from="CanvasLayer/Control/HSlider" to="." method="_on_h_slider_segment_thickness_value_changed"]
 [connection signal="pressed" from="CanvasLayer/Control/Button" to="." method="_on_clear_button_pressed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HSlider_CL4_StartDistance" to="." method="_on_h_slider_cl_4_start_distance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HSlider_CL4_IntervalLength" to="." method="_on_h_slider_cl_4_interval_length_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HSlider_CL3_StartDistance" to="." method="_on_h_slider_cl_3_start_distance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/HSlider_CL3_IntervalLength" to="." method="_on_h_slider_cl_3_interval_length_value_changed"]

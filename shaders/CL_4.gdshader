@@ -85,8 +85,11 @@ const float CASCADE_LEVEL = 4.0;
 
 const int MAX_NO_RAY_MARCH_STEPS = 64;
 
-const float C4_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
-const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we do 4 ^ Cascade level == 4 ^ 4 since we are on cascade level 4
+// 171.66667
+//const float C4_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
+
+// 512
+//const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we do 4 ^ Cascade level == 4 ^ 4 since we are on cascade level 4
 
 const float RAY_MARCH_HIT_THRESHOLD = 0.6;
 
@@ -94,9 +97,13 @@ uniform vec2 u_C4_probe_offset = vec2(16.0, 16.0);
 uniform vec2 u_C4_xy_NO_probes = vec2(32.0, 32.0);
 uniform float u_C4_no_rays_per_probe = 1024.0;
 
+uniform float U_C4_RAY_START_DISTANCE = 171.0;
+uniform float U_C4_RAY_INTERVAL_LENGTH = 512.0;
 
 void fragment()
 {
+	float C4_START_DISTANCE = U_C4_RAY_START_DISTANCE;
+	float MAX_RAY_LENGTH = U_C4_RAY_INTERVAL_LENGTH;
 
 	vec2 spacing_between_probes = u_virtual_resolution / u_C4_xy_NO_probes;
 
