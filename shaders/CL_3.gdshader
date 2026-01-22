@@ -9,9 +9,12 @@ const ivec2 CASCADE_TEXTURE_SIZE_XY = ivec2(1024, 1024); // 1024 by 1024
 
 const int MAX_NO_RAY_MARCH_STEPS = 64;
 
-const float C4_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 1.0)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
-const float C3_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
-const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we do 4 ^ Cascade level == 4 ^ 4 since we are on cascade level 4
+uniform float U_C3_RAY_START_DISTANCE = 44.0;
+uniform float U_C3_RAY_INTERVAL_LENGTH = 128.0;
+
+//const float C4_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL + 1.0)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
+//const float C3_START_DISTANCE = (C0_RAY_INTERVAL * (1.0 - (pow(4.0, CASCADE_LEVEL)))) / (1.0 - 4.0);  // We use 4 because the origin moves 4x further away as we increase the cascade index from 0
+//const float MAX_RAY_LENGTH = C0_RAY_INTERVAL * (pow(4.0, CASCADE_LEVEL)); // we do 4 ^ Cascade level == 4 ^ 4 since we are on cascade level 4
 
 const float RAY_MARCH_HIT_THRESHOLD = 0.6;
 
@@ -212,7 +215,8 @@ void vertex()
 
 void fragment()
 {
-	
+	float C3_START_DISTANCE = U_C3_RAY_START_DISTANCE;
+	float MAX_RAY_LENGTH = U_C3_RAY_INTERVAL_LENGTH;
 	// SubViewport textures are GPU render targets. GPU APIs (OpenGL / Vulkan) define:
 	// therefore:   Texture origin = bottom-left.
 	//

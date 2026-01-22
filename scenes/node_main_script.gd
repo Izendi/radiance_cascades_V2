@@ -268,3 +268,23 @@ func _on_color_picker_button_color_changed(color):
 
 func _on_clear_button_pressed():
 	currentArrayInex = 0;
+
+
+func _on_h_slider_cl_4_start_distance_value_changed(value):
+	%Label_CL4_SD.text = str(value)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_START_DISTANCE", value)
+
+
+func _on_h_slider_cl_4_interval_length_value_changed(value):
+	%Label_CL4_IL.text = str(value)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_INTERVAL_LENGTH", value)
+
+
+func _on_h_slider_cl_3_start_distance_value_changed(value):
+	%Label_CL3_SD.text = str(value)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_START_DISTANCE", value)
+
+
+func _on_h_slider_cl_3_interval_length_value_changed(value):
+	%Label_CL3_IL.text = str(value)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_INTERVAL_LENGTH", value)
