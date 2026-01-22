@@ -170,21 +170,4 @@ void fragment()
 
 		COLOR = vec4(finalColor, 1.0);
 
-	//if(arrayLargestIndex > 1)
-	//{
-		//vec4 testVec = read_data_position(1);
-		//
-		//COLOR = vec4(testVec.x/500.0, 0.0, 0.0, 1.0);
-	//}
-
-
-
-
-
-
 }
-
-//void light() {
-//	// Called for every pixel for every light affecting the CanvasItem.
-//	// Uncomment to replace the default light processing function with this one.
-//}
