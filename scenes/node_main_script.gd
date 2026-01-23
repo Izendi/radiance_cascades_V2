@@ -18,6 +18,8 @@ extends Node2D
 
 @onready var segmentThickness: float = 5.0
 
+@onready var enable_length_sliders: bool = false
+
 var time_passed: float = 0.0
 
 var ping_is_A := true
@@ -73,6 +75,11 @@ func _ready():
 	
 	sdfSSLocation_tex = ImageTexture.create_from_image(sdfSSLocation)
 	sdfSSColor_tex = ImageTexture.create_from_image(sdfSSColor)
+	
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_INTERVAL_LENGTH", 77.0)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_START_DISTANCE", 19.0)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_INTERVAL_LENGTH", 520.0)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_START_DISTANCE", 44.0)
 	
 
 func _physics_process(delta):
@@ -288,3 +295,38 @@ func _on_h_slider_cl_3_start_distance_value_changed(value):
 func _on_h_slider_cl_3_interval_length_value_changed(value):
 	%Label_CL3_IL.text = str(value)
 	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_INTERVAL_LENGTH", value)
+
+
+func _on_button_toggle_length_sliders_pressed():
+	enable_length_sliders = !enable_length_sliders;
+	%Control_SD_and_IL_sliders.visible = enable_length_sliders;
+
+
+func _on_h_slider_cl_2_start_distance_value_changed(value):
+	%Label_CL2_SD.text = str(value)
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("U_C2_RAY_START_DISTANCE", value)
+
+
+func _on_h_slider_cl_2_interval_length_value_changed(value):
+	%Label_CL2_IL.text = str(value)
+	$SubViewport_CL_2/MeshInstance2D.material.set_shader_parameter("U_C2_RAY_INTERVAL_LENGTH", value)
+
+
+func _on_h_slider_cl_1_start_distance_value_changed(value):
+	%Label_CL1_SD.text = str(value)
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("U_C1_RAY_START_DISTANCE", value)
+
+
+func _on_h_slider_cl_1_interval_length_value_changed(value):
+	%Label_CL1_IL.text = str(value)
+	$SubViewport_CL_1/MeshInstance2D.material.set_shader_parameter("U_C1_RAY_INTERVAL_LENGTH", value)
+
+
+func _on_h_slider_cl_0_start_distance_value_changed(value):
+	%Label_CL0_SD.text = str(value)
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("U_C0_RAY_START_DISTANCE", value)
+
+
+func _on_h_slider_cl_0_interval_length_value_changed(value):
+	%Label_CL0_IL.text = str(value)
+	$SubViewport_CL_0/MeshInstance2D.material.set_shader_parameter("U_C0_RAY_INTERVAL_LENGTH", value)
