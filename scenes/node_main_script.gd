@@ -18,6 +18,8 @@ extends Node2D
 
 @onready var segmentThickness: float = 5.0
 
+@onready var enable_length_sliders: bool = false
+
 var time_passed: float = 0.0
 
 var ping_is_A := true
@@ -293,3 +295,8 @@ func _on_h_slider_cl_3_start_distance_value_changed(value):
 func _on_h_slider_cl_3_interval_length_value_changed(value):
 	%Label_CL3_IL.text = str(value)
 	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_INTERVAL_LENGTH", value)
+
+
+func _on_button_toggle_length_sliders_pressed():
+	enable_length_sliders = !enable_length_sliders;
+	%Control_SD_and_IL_sliders.visible = enable_length_sliders;

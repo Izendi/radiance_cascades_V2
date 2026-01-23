@@ -259,7 +259,7 @@ void fragment()
 		
 		march_distance = MAX_RAY_LENGTH;
 		
-		if(ray_distance_from_probe > MAX_RAY_LENGTH)
+		if(ray_distance_from_probe > (MAX_RAY_LENGTH + C3_START_DISTANCE))
 		{
 			break;
 		}
