@@ -72,6 +72,8 @@ size = Vector2(512, 512)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ussq4"]
 shader = ExtResource("8_jowvq")
+shader_parameter/U_C0_RAY_START_DISTANCE = 0.0
+shader_parameter/U_C0_RAY_INTERVAL_LENGTH = 2.0
 shader_parameter/u_C1_probe_offset = Vector2(2, 2)
 shader_parameter/u_C1_xy_NO_probes = Vector2(256, 256)
 shader_parameter/u_c1_xy_NO_rays = Vector2(4, 4)
@@ -92,6 +94,8 @@ size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hu82w"]
 shader = ExtResource("9_dsgrs")
+shader_parameter/U_C1_RAY_START_DISTANCE = 8.0
+shader_parameter/U_C1_RAY_INTERVAL_LENGTH = 2.0
 shader_parameter/u_C2_probe_offset = Vector2(4, 4)
 shader_parameter/u_C2_xy_NO_probes = Vector2(128, 128)
 shader_parameter/u_c2_xy_NO_rays = Vector2(8, 8)
@@ -112,6 +116,8 @@ size = Vector2(1024, 1024)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n3okx"]
 shader = ExtResource("10_453n1")
+shader_parameter/U_C2_RAY_START_DISTANCE = 10.0
+shader_parameter/U_C2_RAY_INTERVAL_LENGTH = 32.0
 shader_parameter/u_C3_probe_offset = Vector2(8, 8)
 shader_parameter/u_C3_xy_NO_probes = Vector2(64, 64)
 shader_parameter/u_c3_xy_NO_rays = Vector2(16, 16)
@@ -396,13 +402,13 @@ offset_bottom = 459.76
 
 [node name="HSlider_CL4_StartDistance" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 171.0
+offset_left = 139.0
 offset_top = 8.7599945
 offset_right = 257.76
 offset_bottom = 36.51999
 min_value = 2.0
 max_value = 600.0
-value = 171.0
+value = 19.0
 
 [node name="Panel_CL4_SD" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
@@ -418,17 +424,17 @@ offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "171"
+text = "19"
 
 [node name="HSlider_CL4_IntervalLength" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 176.0
+offset_left = 143.0
 offset_top = 50.76
 offset_right = 254.76001
 offset_bottom = 78.51999
 min_value = 2.0
 max_value = 600.0
-value = 512.0
+value = 77.0
 
 [node name="Panel_CL4_IL" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
@@ -444,26 +450,28 @@ offset_left = 12.0
 offset_top = 5.0
 offset_right = 52.0
 offset_bottom = 28.0
-text = "512"
+text = "77"
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 106.0
-offset_top = 2.7599983
-offset_right = 157.0
-offset_bottom = 31.759995
+offset_left = 69.0
+offset_top = 1.7599983
+offset_right = 120.0
+offset_bottom = 30.759995
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 4.0
+offset_top = 1.0
+offset_right = 48.0
+offset_bottom = 24.0
 text = "C4 SD"
 
 [node name="Panel3" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 107.0
+offset_left = 70.0
 offset_top = 45.76
-offset_right = 158.0
+offset_right = 121.0
 offset_bottom = 74.759995
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel3"]
@@ -476,7 +484,7 @@ text = "C4 IL"
 
 [node name="HSlider_CL3_StartDistance" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 172.0
+offset_left = 144.0
 offset_top = 92.759995
 offset_right = 258.76
 offset_bottom = 120.51999
@@ -502,13 +510,13 @@ text = "44"
 
 [node name="HSlider_CL3_IntervalLength" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 178.0
+offset_left = 150.0
 offset_top = 151.76
 offset_right = 253.76001
 offset_bottom = 177.51999
 min_value = 2.0
 max_value = 600.0
-value = 128.0
+value = 520.0
 
 [node name="Panel_CL3_IL" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
@@ -524,13 +532,13 @@ offset_left = 8.0
 offset_top = 5.0
 offset_right = 48.0
 offset_bottom = 28.0
-text = "128"
+text = "520"
 
 [node name="Panel4" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 106.0
+offset_left = 71.0
 offset_top = 96.759995
-offset_right = 157.0
+offset_right = 122.0
 offset_bottom = 125.759995
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel4"]
@@ -543,10 +551,10 @@ text = "C3 SD"
 
 [node name="Panel5" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 107.0
-offset_top = 143.76
-offset_right = 158.0
-offset_bottom = 172.76
+offset_left = 71.0
+offset_top = 146.76
+offset_right = 122.0
+offset_bottom = 175.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel5"]
 layout_mode = 0
@@ -558,10 +566,10 @@ text = "C3 IL"
 
 [node name="Panel6" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 107.0
-offset_top = 195.76
-offset_right = 158.0
-offset_bottom = 224.76
+offset_left = 72.0
+offset_top = 194.76
+offset_right = 123.0
+offset_bottom = 223.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel6"]
 layout_mode = 0
@@ -579,18 +587,19 @@ offset_right = 330.0
 offset_bottom = 224.76
 
 [node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "10"
 
 [node name="Panel7" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 107.0
+offset_left = 72.0
 offset_top = 240.76
-offset_right = 158.0
+offset_right = 123.0
 offset_bottom = 269.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel7"]
@@ -601,42 +610,45 @@ offset_right = 46.0
 offset_bottom = 26.0
 text = "C2 IL"
 
-[node name="Panel_CL2_SD2" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="Panel_CL2_IL" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
 offset_left = 269.0
 offset_top = 240.76
 offset_right = 330.0
 offset_bottom = 269.76
 
-[node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD2"]
+[node name="Label_CL2_IL" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_IL"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "32"
 
 [node name="HSlider_CL2_StartDistance" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 180.0
+offset_left = 152.0
 offset_top = 205.76
 offset_right = 256.0
 offset_bottom = 226.76
 max_value = 600.0
+value = 10.0
 
 [node name="HSlider_CL2_IntervalLength" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 183.0
+offset_left = 152.0
 offset_top = 246.76
 offset_right = 259.0
 offset_bottom = 267.76
 max_value = 600.0
+value = 32.0
 
 [node name="Panel8" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 107.0
+offset_left = 71.0
 offset_top = 287.76
-offset_right = 158.0
+offset_right = 122.0
 offset_bottom = 316.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel8"]
@@ -647,35 +659,37 @@ offset_right = 46.0
 offset_bottom = 26.0
 text = "C1 SD"
 
-[node name="Panel_CL2_SD3" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="Panel_CL1_SD" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
 offset_left = 269.0
 offset_top = 287.76
 offset_right = 330.0
 offset_bottom = 316.76
 
-[node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD3"]
+[node name="Label_CL1_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL1_SD"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "10"
 
-[node name="HSlider_CL2_IntervalLength2" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="HSlider_CL1_StartDistance" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 183.0
+offset_left = 147.0
 offset_top = 293.76
 offset_right = 259.0
 offset_bottom = 314.76
 max_value = 600.0
+value = 10.0
 
 [node name="Panel9" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 108.0
-offset_top = 331.76
-offset_right = 159.0
-offset_bottom = 360.76
+offset_left = 73.0
+offset_top = 330.76
+offset_right = 124.0
+offset_bottom = 359.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel9"]
 layout_mode = 0
@@ -685,34 +699,36 @@ offset_right = 46.0
 offset_bottom = 26.0
 text = "C1 IL"
 
-[node name="Panel_CL2_SD4" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="Panel_CL1_IL" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
 offset_left = 270.0
 offset_top = 331.76
 offset_right = 331.0
 offset_bottom = 360.76
 
-[node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD4"]
+[node name="Label_CL1_IL" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL1_IL"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "2"
 
-[node name="HSlider_CL2_IntervalLength3" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="HSlider_CL1_IntervalLength" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 184.0
+offset_left = 149.0
 offset_top = 337.76
 offset_right = 260.0
 offset_bottom = 358.76
 max_value = 600.0
+value = 2.0
 
 [node name="Panel10" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 109.0
+offset_left = 72.0
 offset_top = 375.76
-offset_right = 160.0
+offset_right = 123.0
 offset_bottom = 404.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel10"]
@@ -723,24 +739,25 @@ offset_right = 46.0
 offset_bottom = 26.0
 text = "C0 SD"
 
-[node name="Panel_CL2_SD5" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="Panel_CL0_SD" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
 offset_left = 271.0
 offset_top = 375.76
 offset_right = 332.0
 offset_bottom = 404.76
 
-[node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD5"]
+[node name="Label_CL0_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL0_SD"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "0"
 
-[node name="HSlider_CL2_IntervalLength4" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="HSlider_CL0_StartDistance" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 185.0
+offset_left = 152.0
 offset_top = 381.76
 offset_right = 261.0
 offset_bottom = 402.76
@@ -748,9 +765,9 @@ max_value = 600.0
 
 [node name="Panel11" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 108.0
+offset_left = 72.0
 offset_top = 418.76
-offset_right = 159.0
+offset_right = 123.0
 offset_bottom = 447.76
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel11"]
@@ -761,28 +778,30 @@ offset_right = 46.0
 offset_bottom = 26.0
 text = "C0 IL"
 
-[node name="Panel_CL2_SD6" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="Panel_CL0_IL" type="Panel" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
 offset_left = 270.0
 offset_top = 418.76
 offset_right = 331.0
 offset_bottom = 447.76
 
-[node name="Label_CL2_SD" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL2_SD6"]
+[node name="Label_CL0_IL" type="Label" parent="CanvasLayer/Control/Control_SD_and_IL_sliders/Panel_CL0_IL"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 11.0
 offset_top = 5.0
 offset_right = 51.0
 offset_bottom = 28.0
-text = "44"
+text = "2"
 
-[node name="HSlider_CL2_IntervalLength5" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
+[node name="HSlider_CL0_IntervalLength" type="HSlider" parent="CanvasLayer/Control/Control_SD_and_IL_sliders"]
 layout_mode = 0
-offset_left = 184.0
+offset_left = 148.0
 offset_top = 424.76
 offset_right = 260.0
 offset_bottom = 445.76
 max_value = 600.0
+value = 2.0
 
 [node name="Button_Toggle_Length_Sliders" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 0
@@ -807,4 +826,10 @@ mesh = SubResource("QuadMesh_lbbxc")
 [connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL4_IntervalLength" to="." method="_on_h_slider_cl_4_interval_length_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL3_StartDistance" to="." method="_on_h_slider_cl_3_start_distance_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL3_IntervalLength" to="." method="_on_h_slider_cl_3_interval_length_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL2_StartDistance" to="." method="_on_h_slider_cl_2_start_distance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL2_IntervalLength" to="." method="_on_h_slider_cl_2_interval_length_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL1_StartDistance" to="." method="_on_h_slider_cl_1_start_distance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL1_IntervalLength" to="." method="_on_h_slider_cl_1_interval_length_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL0_StartDistance" to="." method="_on_h_slider_cl_0_start_distance_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Control/Control_SD_and_IL_sliders/HSlider_CL0_IntervalLength" to="." method="_on_h_slider_cl_0_interval_length_value_changed"]
 [connection signal="pressed" from="CanvasLayer/Control/Button_Toggle_Length_Sliders" to="." method="_on_button_toggle_length_sliders_pressed"]
