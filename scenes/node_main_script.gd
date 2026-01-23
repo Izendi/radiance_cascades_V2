@@ -74,6 +74,11 @@ func _ready():
 	sdfSSLocation_tex = ImageTexture.create_from_image(sdfSSLocation)
 	sdfSSColor_tex = ImageTexture.create_from_image(sdfSSColor)
 	
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_INTERVAL_LENGTH", 512.0)
+	$SubViewport_CL_4/MeshInstance2D.material.set_shader_parameter("U_C4_RAY_START_DISTANCE", 171.0)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_INTERVAL_LENGTH", 128.0)
+	$SubViewport_CL_3/MeshInstance2D.material.set_shader_parameter("U_C3_RAY_START_DISTANCE", 44.0)
+	
 
 func _physics_process(delta):
 	pass
