@@ -809,7 +809,7 @@ offset_left = 500.76
 offset_top = 5.7599983
 offset_right = 668.76
 offset_bottom = 39.519997
-text = "Toggle length Sliders"
+text = "Toggle length sliders"
 
 [node name="SubViewport_mouseClicks" type="SubViewport" parent="."]
 
